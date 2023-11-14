@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: "Global: Read and parse config.yaml"
+  ansible.builtin.set_fact:
+    global_cfgobj: "{{ lookup('file', '/app/values.yaml') | from_yaml }}"
+
+- name: "Global: Set variables"
+  ansible.builtin.set_fact:
+    global_admin_username: "{{ global_cfgobj.config.keycloak.adminUser }}"
+    global_admin_password: "{{ global_cfgobj.config.keycloak.adminPassword }}"
+    global_keycloak_host: "{{ global_cfgobj.global.hosts.keycloak }}.{{ global_cfgobj.global.domain }}"
+    global_ums_realm: "{{ global_cfgobj.config.keycloak.realm }}"
+
+- name: "Global: Set derived variables"
+  ansible.builtin.set_fact:
+    global_keycloak_url: "https://{{ global_keycloak_host }}"
+
+- ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+...

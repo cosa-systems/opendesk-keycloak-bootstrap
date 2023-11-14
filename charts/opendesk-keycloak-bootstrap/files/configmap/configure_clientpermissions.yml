@@ -1,0 +1,147 @@
+# SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: "Fetch client info"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "clientqueryresult"
+
+- name: "Set clientids"
+  ansible.builtin.set_fact:
+    clientid_realmmanagement: "{{ clientqueryresult['json'] | json_query('[?clientId==`realm-management`].id')
+      | first }}"
+    clientid_intercom: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-intercom`].id')
+      | first }}"
+    clientid_ncoidc: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-nextcloud`].id')
+      | first }}"
+    clientid_as8oidc: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-oxappsuite`].id')
+      | first }}"
+    clientid_matrix: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-matrix`].id')
+      | first }}"
+
+# Enable permissions on the given clients
+- name: "Enable permissions on client intercom"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_intercom }}\
+      /management/permissions"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    body_format: "json"
+    method: "PUT"
+    body: "{ \"enabled\": true }"
+    status_code: [200]
+- name: "Enable permissions on client ncoidc"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_ncoidc }}\
+      /management/permissions"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    body_format: "json"
+    method: "PUT"
+    body: "{ \"enabled\": true }"
+    status_code: [200]
+- name: "Enable permissions on client as8oidc"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_as8oidc }}\
+      /management/permissions"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    body_format: "json"
+    method: "PUT"
+    body: "{ \"enabled\": true }"
+    status_code: [200]
+- name: "Enable permissions on client matrix"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_matrix }}\
+      /management/permissions"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    body_format: "json"
+    method: "PUT"
+    body: "{ \"enabled\": true }"
+    status_code: [200]
+
+- name: "Add intercom policy to management client"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+      /authz/resource-server/policy"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    body_format: "json"
+    method: "POST"
+    body: |
+      {
+        "name": "opendesk-intercom",
+        "type": "client",
+        "logic": "POSITIVE",
+        "decisionStrategy": "UNANIMOUS",
+        "config": {
+          "clients": "[\"opendesk-intercom\"]"
+        }
+      }
+    status_code: [201, 409]
+
+- name: "Fetch policy info"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+      /authz/resource-server/policy"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "policyqueryresult"
+
+- name: "set intercom_policy_id"
+  ansible.builtin.set_fact:
+    intercom_policy_id: "{{ policyqueryresult['json'] | json_query('[?name==`opendesk-intercom`].id') | first }}"
+
+- name: "Fetch scope info"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+      /authz/resource-server/scope"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "scopequeryresult"
+
+- name: "set tokenexchange_scope_id"
+  ansible.builtin.set_fact:
+    tokenexchange_scope_id: "{{ scopequeryresult['json'] | json_query('[?name==`token-exchange`].id') | first }}"
+
+- name: "Fetch permission scope info"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+      /authz/resource-server/permission/scope"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "permissionscopequeryresult"
+
+- name: "Will loop over"
+  ansible.builtin.debug:
+    # cannot use json_query's start with due to https://github.com/ansible/ansible/issues/27299
+    msg: "{{ permissionscopequeryresult['json'] | selectattr('name', 'contains', 'token-exchange.permission.client.')
+      | list | json_query('[*].name') }}"
+
+- name: "Looping now"
+  ansible.builtin.include_tasks: "configure_clientpermissions_loop.yml"
+  loop: "{{ permissionscopequeryresult['json'] | selectattr('name', 'contains', 'token-exchange.permission.client.')
+    | list | json_query('[*].name') }}"
+  loop_control:
+    loop_var: "loop_client_string"
+...

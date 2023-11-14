@@ -1,0 +1,70 @@
+# SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: "get loop_client_id from loop_client_string"
+  ansible.builtin.set_fact:
+    loop_client_id: "{{ loop_client_string.split('.')[-1] }}"
+
+- name: "Get tokenExchange_permission_scope_id_for_loop_client"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+      /authz/resource-server/permission/scope"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "result"
+
+- name: "Set tokenExchange_permission_scope_id_for_loop_client"
+  ansible.builtin.set_fact:
+    tokenExchange_permission_scope_id_for_loop_client: "{{ result['json'] |
+      json_query('[?name==`token-exchange.permission.client.'+loop_client_id+'`].id') | first }}"
+
+- name: "Get resource_id_for_loop_client"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+      /authz/resource-server/resource"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "result"
+
+- name: "Set resource_id_for_loop_client"
+  ansible.builtin.set_fact:
+    resource_id_for_loop_client: "{{ result['json'] | json_query('[?name==`client.resource.'+loop_client_id+'`]._id')
+      | first }}"
+
+- name: "Set body for request"
+  ansible.builtin.set_fact:
+    request_body: |
+      {
+        "name":"token-exchange.permission.client.{{ loop_client_id }}",
+        "type":"scope",
+        "logic":"POSITIVE",
+        "decisionStrategy":"UNANIMOUS",
+        "resources":[
+            "{{ resource_id_for_loop_client }}"
+        ],
+        "scopes":[
+            "{{ tokenexchange_scope_id }}"
+        ],
+        "policies":[
+            "{{ intercom_policy_id }}"
+        ]
+      }
+
+- name: "set the policy (realm_management > authorization > permissions > token-xchange.permission.client.<clientid>"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+      /authz/resource-server/permission/scope/{{ tokenExchange_permission_scope_id_for_loop_client }}"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "PUT"
+    body_format: "json"
+    body: "{{ request_body }}"
+    status_code: [200, 201]
+...

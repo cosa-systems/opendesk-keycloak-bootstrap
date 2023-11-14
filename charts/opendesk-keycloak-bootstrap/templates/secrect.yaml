@@ -1,0 +1,15 @@
+{{/*
+SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
+SPDX-License-Identifier: Apache-2.0
+*/}}
+---
+kind: "Secret"
+apiVersion: "v1"
+metadata:
+  name: "{{ include "common.names.fullname" . }}"
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+
+stringData:
+  values.yaml: |
+    {{ .Values | toYaml | nindent 4 }}

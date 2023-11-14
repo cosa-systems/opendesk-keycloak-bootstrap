@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
+# SPDX-License-Identifier: Apache-2.0
+---
+apiVersion: "v2"
+description: "This helm chart contains a bootstrap job for configuration of the Keycloak within openDesk"
+name: "opendesk-keycloak-bootstrap"
+type: "application"
+version: "1.0.4"
+keywords:
+  - "keycloak"
+  - "opendesk"
+  - "bootstrap"
+  - "keycloak-bootstrap"
+dependencies:
+  - name: "common"
+    version: "^2.x.x"
+    repository: "oci://registry.souvap-univention.de/souvap/tooling/charts/bitnami-charts"
+...

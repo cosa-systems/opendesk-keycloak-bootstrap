@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
+# SPDX-License-Identifier: Apache-2.0
+---
+- hosts: "localhost"
+  tasks:
+
+    - ansible.builtin.include_tasks: "./set_global_facts.yml"
+    - name: "Debug output"
+      ansible.builtin.debug:
+        var: "global_cfgobj"
+      when: "global_cfgobj.config.debug.enabled|bool"
+
+    - ansible.builtin.include_tasks: "./configure_clientpermissions.yml"
+
+    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+
+    - ansible.builtin.include_tasks: "./configure_realmdetails.yml"
+...
