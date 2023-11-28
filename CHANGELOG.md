@@ -1,3 +1,10 @@
+# 1.0.0 (2023-11-28)
+
+
+### Bug Fixes
+
+* **keycloak:** Initial commit ([b71b5a9](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/commit/b71b5a9b6dea2307cc1a1819fa25f9f74d24abb8))
+
 ## [1.0.4](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/compare/v1.0.3...v1.0.4) (2023-11-24)
 
 
