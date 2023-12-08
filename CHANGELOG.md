@@ -1,3 +1,10 @@
+## [1.0.1](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/compare/v1.0.0...v1.0.1) (2023-12-08)
+
+
+### Bug Fixes
+
+* **realm:** Template more realm settings ([cdfe485](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/commit/cdfe485d590668980fd4aa3a678ccf250c5c7175))
+
 # 1.0.0 (2023-11-28)
 
 

@@ -37,6 +37,12 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | config.keycloak.adminPassword | string | `""` | The Keycloak master realm admin user's password as input for the secret |
 | config.keycloak.adminUser | string | `"kcadmin"` | The Keycloak master realm admin user |
 | config.keycloak.realm | string | `"opendesk"` | The name of the realm that is going to contain all the configuration |
+| config.realmSettings.accessTokenLifespan | int | `300` | Please lookup "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
+| config.realmSettings.rememberMe | bool | `true` | Enable "Remember Me" option making the user's Keycloak session persistant based on the RememberMe related parameters below |
+| config.realmSettings.ssoSessionIdleTimeout | int | `14400` | Please lookup "SSO Session Idle" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
+| config.realmSettings.ssoSessionIdleTimeoutRememberMe | int | `28800` | Please lookup "SSO Session Idle Remember Me" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
+| config.realmSettings.ssoSessionMaxLifespan | int | `57600` | Please lookup "SSO Session Max" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
+| config.realmSettings.ssoSessionMaxLifespanRememberMe | int | `1209600` | Please lookup "SSO Session Max Remember Me" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
 | containerSecurityContext.allowPrivilegeEscalation | bool | `false` | Enable container privileged escalation. |
 | containerSecurityContext.capabilities | object | `{"drop":["ALL"]}` | Security capabilities for container. |
 | containerSecurityContext.enabled | bool | `true` | Enable security context. |
