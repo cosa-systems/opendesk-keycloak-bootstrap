@@ -60,11 +60,34 @@ config:
     # -- The name of the realm that is going to contain all the configuration
     realm: "opendesk"
   # In this section you can define various objects based on Keycloaks config format
+  # The object classes are processed by the Python script `kcom.py` that is shipped
+  # with the Helm charts image. If you add new classes here you want to ensure they
+  # are supported by the script.
   custom:
     # -- Create client scopes based on a YAML version of Keycloak's JSON config format
     clientScopes: []
     # -- Create clients based on a YAML version of Keycloak's JSON config format
     clients: []
+    # -- Configure the realm details
+  realmSettings:
+    # -- Please lookup "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/
+    # for the latest upstream documentation.
+    accessTokenLifespan: 300
+    # -- Please lookup "SSO Session Idle" in https://www.keycloak.org/docs/latest/server_admin/
+    # for the latest upstream documentation.
+    ssoSessionIdleTimeout: 14400
+    # -- Please lookup "SSO Session Max" in https://www.keycloak.org/docs/latest/server_admin/
+    # for the latest upstream documentation.
+    ssoSessionMaxLifespan: 57600
+    # -- Enable "Remember Me" option making the user's Keycloak session persistant based on the RememberMe
+    # related parameters below
+    rememberMe: true
+    # -- Please lookup "SSO Session Idle Remember Me" in https://www.keycloak.org/docs/latest/server_admin/
+    # for the latest upstream documentation.
+    ssoSessionIdleTimeoutRememberMe: 28800
+    # -- Please lookup "SSO Session Max Remember Me" in https://www.keycloak.org/docs/latest/server_admin/
+    # for the latest upstream documentation.
+    ssoSessionMaxLifespanRememberMe: 1209600
 
 # Security Context.
 # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/

@@ -11,9 +11,14 @@
     body_format: "json"
     body: |
       {
-        "rememberMe": true,
-        "ssoSessionIdleTimeoutRememberMe": 0,
-        "ssoSessionMaxLifespanRememberMe": 2400
+        "accessTokenLifespan": {{ global_cfgobj.config.realmSettings.accessTokenLifespan }},
+        "ssoSessionIdleTimeout": {{ global_cfgobj.config.realmSettings.ssoSessionIdleTimeout }},
+        "ssoSessionMaxLifespan": {{ global_cfgobj.config.realmSettings.ssoSessionMaxLifespan }},
+        "rememberMe": {{ global_cfgobj.config.realmSettings.rememberMe }},
+        "ssoSessionIdleTimeoutRememberMe":
+          {{ global_cfgobj.config.realmSettings.ssoSessionIdleTimeoutRememberMe }},
+        "ssoSessionMaxLifespanRememberMe":
+          {{ global_cfgobj.config.realmSettings.ssoSessionMaxLifespanRememberMe }}
       }
     status_code: [204]
 
