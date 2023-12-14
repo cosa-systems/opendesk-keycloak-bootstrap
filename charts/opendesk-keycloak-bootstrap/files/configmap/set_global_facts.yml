@@ -12,9 +12,15 @@
     global_keycloak_host: "{{ global_cfgobj.global.hosts.keycloak }}.{{ global_cfgobj.global.domain }}"
     global_ums_realm: "{{ global_cfgobj.config.keycloak.realm }}"
 
-- name: "Global: Set derived variables"
+- name: "Global: Set derived variable for external connection"
   ansible.builtin.set_fact:
     global_keycloak_url: "https://{{ global_keycloak_host }}"
+  when: "not {{ global_cfgobj.config.keycloak.intraCluster.enabled }}"
+
+- name: "Global: Set derived variable for internal connection"
+  ansible.builtin.set_fact:
+    global_keycloak_url: "{{ global_cfgobj.config.keycloak.intraCluster.internalBaseUrl }}"
+  when: "{{ global_cfgobj.config.keycloak.intraCluster.enabled }}"
 
 - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
 ...

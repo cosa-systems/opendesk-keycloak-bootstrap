@@ -53,6 +53,14 @@ config:
     pauseBeforeScriptStart: 0
   # Keycloak specific attributes.
   keycloak:
+    # Allow cluster internal communication for configuring Keycloak.
+    # Required in case the /admin console of Keycloak is not exposed to the public internet
+    intraCluster:
+      # -- Enable internal communication
+      enabled: true
+      # -- Internal hostname including protocol and port
+      # Currently only http and https with valid certificates are supported.
+      internalBaseUrl: "http://ums-keycloak:8080"
     # -- The Keycloak master realm admin user
     adminUser: "kcadmin"
     # -- The Keycloak master realm admin user's password as input for the secret
