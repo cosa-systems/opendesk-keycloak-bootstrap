@@ -1,3 +1,10 @@
+## [1.0.2](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/compare/v1.0.1...v1.0.2) (2023-12-14)
+
+
+### Bug Fixes
+
+* **values:** Intracluster config support ([bb1e204](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/commit/bb1e204bc760ea584c07a51ed7dce0d1693a8fc1))
+
 ## [1.0.1](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/compare/v1.0.0...v1.0.1) (2023-12-08)
 
 

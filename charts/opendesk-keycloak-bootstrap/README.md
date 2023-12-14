@@ -36,6 +36,8 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | config.debug.pauseBeforeScriptStart | int | `0` | Seconds for the job to pause before starting the actual bootstrapping. |
 | config.keycloak.adminPassword | string | `""` | The Keycloak master realm admin user's password as input for the secret |
 | config.keycloak.adminUser | string | `"kcadmin"` | The Keycloak master realm admin user |
+| config.keycloak.intraCluster.enabled | bool | `true` | Enable internal communication |
+| config.keycloak.intraCluster.internalBaseUrl | string | `"http://ums-keycloak:8080"` | Internal hostname including protocol and port Currently only http and https with valid certificates are supported. |
 | config.keycloak.realm | string | `"opendesk"` | The name of the realm that is going to contain all the configuration |
 | config.realmSettings.accessTokenLifespan | int | `300` | Please lookup "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
 | config.realmSettings.rememberMe | bool | `true` | Enable "Remember Me" option making the user's Keycloak session persistant based on the RememberMe related parameters below |
