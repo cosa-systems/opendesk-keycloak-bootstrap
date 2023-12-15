@@ -1,3 +1,10 @@
+## [1.0.3](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/compare/v1.0.2...v1.0.3) (2023-12-15)
+
+
+### Bug Fixes
+
+* **ansible:** Remove templating delimiter from conditional statement ([0a1545a](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/commit/0a1545ac6cf3166dedadb4f327f03d3cad5b1ff9))
+
 ## [1.0.2](https://gitlab.souvap-univention.de/souvap/tooling/charts/opendesk-keycloak-bootstrap/compare/v1.0.1...v1.0.2) (2023-12-14)
 
 
