@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 ---
 include:
-  project: "souvap/tooling/gitlab-config"
-  ref: "main"
+  project: "bmi/opendesk/tooling/gitlab-config"
+  ref: "v2.1.3"
   file:
     - "ci/common/lint.yml"
     - "ci/helm/helm-lint.yml"
@@ -17,4 +17,6 @@ stages:
   - "publish"
   - ".post"
 
+.common:
+  tags: []  
 ...
