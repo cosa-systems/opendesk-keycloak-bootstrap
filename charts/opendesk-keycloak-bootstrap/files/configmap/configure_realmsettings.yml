@@ -51,4 +51,27 @@
       }
     status_code: [204]
 
+- name: "Explicitly set HTTP headers"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "PUT"
+    body_format: "json"
+    body: |
+      {
+        "browserSecurityHeaders": {
+          "contentSecurityPolicyReportOnly": "",
+          "xContentTypeOptions": "nosniff",
+          "referrerPolicy": "no-referrer",
+          "xRobotsTag": "noindex",
+          "xFrameOptions": "SAMEORIGIN",
+          "contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
+          "xXSSProtection": "1; mode=block",
+          "strictTransportSecurity": "max-age=31536000; includeSubDomains"
+        }
+      }
+    status_code: [204]
+
 ...
