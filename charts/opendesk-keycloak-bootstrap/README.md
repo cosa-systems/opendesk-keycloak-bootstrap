@@ -92,25 +92,9 @@ helm uninstall my-release
 
 ## Signing
 
-### Chart
+Helm charts are signed with helm native signing method.
 
-Helm charts are signed with helm native signing method. You can verify the charts against this GPG key:
-
-```
-
-```
-
-### Images
-
-Container images are signed via [cosign](https://github.com/sigstore/cosign) and can be verified with:
-
-```
-
-```
-
-```
-cosign verify --key cosign.pub --insecure-ignore-tlog <image>
-```
+You can verify the chart against [the public GPG key](../../files/gpg-pubkeys/opendesk.gpg).
 
 ## License
 

@@ -1,3 +1,11 @@
+## [1.0.5](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v1.0.4...v1.0.5) (2023-12-21)
+
+
+### Bug Fixes
+
+* Explicitly set HTTP headers ([5640af9](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/5640af9e3b9b44546b88970dac25c636f58cf220))
+* Update Signing and add GPG key ([cb44924](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/cb4492465c72a7d521f4d488deb6c3759c56fd25))
+
 ## [1.0.4](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v1.0.3...v1.0.4) (2023-12-20)
 
 
