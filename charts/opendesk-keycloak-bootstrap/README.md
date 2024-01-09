@@ -19,7 +19,7 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://registry.souvap-univention.de/souvap/tooling/charts/bitnami-charts | common | ^2.x.x |
+| oci://registry.opencode.de/bmi/opendesk/components/external/charts/bitnami-charts | common | ^2.x.x |
 
 ## Values
 

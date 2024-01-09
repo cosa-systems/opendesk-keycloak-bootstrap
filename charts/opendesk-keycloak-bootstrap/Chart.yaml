@@ -14,5 +14,5 @@ keywords:
 dependencies:
   - name: "common"
     version: "^2.x.x"
-    repository: "oci://registry.souvap-univention.de/souvap/tooling/charts/bitnami-charts"
+    repository: "oci://registry.opencode.de/bmi/opendesk/components/external/charts/bitnami-charts"
 ...

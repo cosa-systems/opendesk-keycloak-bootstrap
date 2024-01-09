@@ -2,9 +2,9 @@
 SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 SPDX-License-Identifier: Apache-2.0
 -->
-# Univention Keycloak Bootstrap Helm Chart Repository
+# openDesk Keycloak Bootstrap Helm Chart Repository
 
-This repository contains Helm Chart for deploying Univention Keycloak into Kubernetes.
+This repository contains Helm Chart for openDesk specific bootstrapping of Keycloak.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ Before you begin, ensure you have met the following requirements:
 
 The documentation is placed in the README of each helm chart:
 
-- [univention-keycloak-bootstrap](charts/univention-keycloak-bootstrap)
+- [opendesk-keycloak-bootstrap](charts/opendesk-keycloak-bootstrap)
 
 ## License
 
