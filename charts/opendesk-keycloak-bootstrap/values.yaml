@@ -10,6 +10,8 @@ global:
   hosts:
     # -- Subdomain for Keycloak, results in "https://{{ keycloak }}.{{ domain }}".
     keycloak: "id"
+    # -- Subdomain for openDesk portal, results in "https://{{ portal }}.{{ domain }}".
+    portal: "portal"
 
   # -- Container registry address.
   registry: "registry.opencode.de"

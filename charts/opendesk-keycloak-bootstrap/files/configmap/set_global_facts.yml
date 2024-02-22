@@ -10,14 +10,15 @@
     global_admin_username: "{{ global_cfgobj.config.keycloak.adminUser }}"
     global_admin_password: "{{ global_cfgobj.config.keycloak.adminPassword }}"
     global_keycloak_host: "{{ global_cfgobj.global.hosts.keycloak }}.{{ global_cfgobj.global.domain }}"
+    global_portal_url: "https://{{ global_cfgobj.global.hosts.portal }}.{{ global_cfgobj.global.domain }}"
     global_ums_realm: "{{ global_cfgobj.config.keycloak.realm }}"
 
-- name: "Global: Set derived variable for external connection"
+- name: "Global: Set Keycloak URL for external connection"
   ansible.builtin.set_fact:
     global_keycloak_url: "https://{{ global_keycloak_host }}"
   when: "not global_cfgobj.config.keycloak.intraCluster.enabled"
 
-- name: "Global: Set derived variable for internal connection"
+- name: "Global: Set Keycloak URL for internal connection"
   ansible.builtin.set_fact:
     global_keycloak_url: "{{ global_cfgobj.config.keycloak.intraCluster.internalBaseUrl }}"
   when: "global_cfgobj.config.keycloak.intraCluster.enabled"
