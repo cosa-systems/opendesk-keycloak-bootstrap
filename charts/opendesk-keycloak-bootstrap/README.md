@@ -39,12 +39,16 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | config.keycloak.intraCluster.enabled | bool | `true` | Enable internal communication |
 | config.keycloak.intraCluster.internalBaseUrl | string | `"http://ums-keycloak:8080"` | Internal hostname including protocol and port Currently only http and https with valid certificates are supported. |
 | config.keycloak.realm | string | `"opendesk"` | The name of the realm that is going to contain all the configuration |
+| config.realmSettings | object | `{"accessTokenLifespan":300,"rememberMe":true,"ssoSessionIdleTimeout":14400,"ssoSessionIdleTimeoutRememberMe":28800,"ssoSessionMaxLifespan":57600,"ssoSessionMaxLifespanRememberMe":1209600}` | Configure the realm details |
 | config.realmSettings.accessTokenLifespan | int | `300` | Please lookup "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
 | config.realmSettings.rememberMe | bool | `true` | Enable "Remember Me" option making the user's Keycloak session persistant based on the RememberMe related parameters below |
 | config.realmSettings.ssoSessionIdleTimeout | int | `14400` | Please lookup "SSO Session Idle" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
 | config.realmSettings.ssoSessionIdleTimeoutRememberMe | int | `28800` | Please lookup "SSO Session Idle Remember Me" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
 | config.realmSettings.ssoSessionMaxLifespan | int | `57600` | Please lookup "SSO Session Max" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
 | config.realmSettings.ssoSessionMaxLifespanRememberMe | int | `1209600` | Please lookup "SSO Session Max Remember Me" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
+| config.twoFactorSettings | object | `{"additionalGroups":[],"roleName":"2FA role"}` | Extended 2FA configuration |
+| config.twoFactorSettings.additionalGroups | list | `[]` | Enable 2FA for given LDAP group(s), just use group Names like `Domain Admin` etc. this requires the name of Keycloak's 2FA roles to be provided as well, see `roleName`. Note: This does not remove 2FA for groups. |
+| config.twoFactorSettings.roleName | string | `"2FA role"` | You must provide Keycloak's 2FA role name when enabling 2FA for groups using the `2faGroups` Array. |
 | containerSecurityContext.allowPrivilegeEscalation | bool | `false` | Enable container privileged escalation. |
 | containerSecurityContext.capabilities | object | `{"drop":["ALL"]}` | Security capabilities for container. |
 | containerSecurityContext.enabled | bool | `true` | Enable security context. |

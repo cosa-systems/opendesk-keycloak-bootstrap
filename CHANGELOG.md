@@ -1,3 +1,10 @@
+# [1.1.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v1.0.7...v1.1.0) (2024-05-14)
+
+
+### Features
+
+* Support to enable additional groups for 2FA ([78e1fab](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/78e1fab3625ec4e8cb7c6f2822aa516189c2a0c5))
+
 ## [1.0.7](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v1.0.6...v1.0.7) (2024-02-22)
 
 
