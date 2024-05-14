@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: "Get 2FA role"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/roles"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "rolesqueryresult"
+
+- name: "Set role id for 2FA role"
+  ansible.builtin.set_fact:
+    two_factor_role_id: "{{ rolesqueryresult['json'] | json_query('[?name==`'+two_factor_role_name+'`].id') | first }}"
+
+- name: "Adding groups now to 2FA role"
+  ansible.builtin.include_tasks: "configure_set_2fa_groups_loop.yml"
+  loop: "{{ two_factor_additional_groups }}"
+  loop_control:
+    loop_var: "loop_group_name"
+...

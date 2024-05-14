@@ -78,7 +78,15 @@ config:
     clientScopes: []
     # -- Create clients based on a YAML version of Keycloak's JSON config format
     clients: []
-    # -- Configure the realm details
+  # -- Extended 2FA configuration
+  twoFactorSettings:
+    # -- Enable 2FA for given LDAP group(s), just use group Names like `Domain Admin` etc.
+    # this requires the name of Keycloak's 2FA roles to be provided as well, see `roleName`.
+    # Note: This does not remove 2FA for groups.
+    additionalGroups: []
+    # -- You must provide Keycloak's 2FA role name when enabling 2FA for groups using the `2faGroups` Array.
+    roleName: "2FA role"
+  # -- Configure the realm details
   realmSettings:
     # -- Please lookup "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/
     # for the latest upstream documentation.

@@ -10,9 +10,12 @@
         var: "global_cfgobj"
       when: "global_cfgobj.config.debug.enabled|bool"
 
+    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+    - ansible.builtin.include_tasks: "./configure_realmsettings.yml"
+
+    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     - ansible.builtin.include_tasks: "./configure_clientpermissions.yml"
 
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
-
-    - ansible.builtin.include_tasks: "./configure_realmsettings.yml"
+    - ansible.builtin.include_tasks: "./configure_set_2fa_groups.yml"
 ...

@@ -12,6 +12,8 @@
     global_keycloak_host: "{{ global_cfgobj.global.hosts.keycloak }}.{{ global_cfgobj.global.domain }}"
     global_portal_url: "https://{{ global_cfgobj.global.hosts.portal }}.{{ global_cfgobj.global.domain }}"
     global_ums_realm: "{{ global_cfgobj.config.keycloak.realm }}"
+    two_factor_role_name: "{{ global_cfgobj.config.twoFactorSettings.roleName }}"
+    two_factor_additional_groups: "{{ [] +  global_cfgobj.config.twoFactorSettings.additionalGroups }}"
 
 - name: "Global: Set Keycloak URL for external connection"
   ansible.builtin.set_fact:
