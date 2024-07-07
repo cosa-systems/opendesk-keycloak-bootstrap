@@ -1,3 +1,10 @@
+## [1.1.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v1.1.0...v1.1.1) (2024-07-07)
+
+
+### Bug Fixes
+
+* **opendesk-keycloak-bootstrap:** Add argo sync annotation ([67ca5e1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/67ca5e1c384395e88b04d487f4fd6a914463bdbd))
+
 # [1.1.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v1.0.7...v1.1.0) (2024-05-14)
 
 
