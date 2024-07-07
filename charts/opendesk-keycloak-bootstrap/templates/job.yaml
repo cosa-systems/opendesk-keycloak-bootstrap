@@ -14,6 +14,7 @@ metadata:
     {{- end }}
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
+    "argocd.argoproj.io/hook": "Sync"
     {{- if .Values.cleanup.deletePodsOnSuccess }}
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
     {{- end }}
