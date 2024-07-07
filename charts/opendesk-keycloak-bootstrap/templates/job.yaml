@@ -1,4 +1,5 @@
 {{/*
+SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 SPDX-License-Identifier: Apache-2.0
 */}}
@@ -13,15 +14,13 @@ metadata:
     {{- include "common.tplvalues.render" ( dict "value" .Values.additionalLabels "context" . ) | nindent 4 }}
     {{- end }}
   annotations:
-    "helm.sh/hook": "post-install,post-upgrade"
-    "argocd.argoproj.io/hook": "Sync"
-    {{- if .Values.cleanup.deletePodsOnSuccess }}
-    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
-    {{- end }}
     {{- if .Values.additionalAnnotations }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.additionalAnnotations "context" . ) | nindent 4 }}
     {{- end }}
 spec:
+  {{- if .Values.cleanup.deletePodsOnSuccess }}
+  ttlSecondsAfterFinished: {{ .Values.cleanup.deletePodsOnSuccessTimeout }}
+  {{- end }}
   template:
     metadata:
       annotations:

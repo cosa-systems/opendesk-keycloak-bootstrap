@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 # SPDX-License-Identifier: Apache-2.0
 ---
@@ -39,6 +40,8 @@ additionalLabels: {}
 cleanup:
   # -- Keep Pods/Job logs after successful run.
   deletePodsOnSuccess: false
+  # -- Keep Pods/Job logs for following time.
+  deletePodsOnSuccessTimeout: 1800
   # -- Keep persistence on delete of this release.
   keepPVCOnDelete: false
 
