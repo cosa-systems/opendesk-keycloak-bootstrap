@@ -1,3 +1,15 @@
+# [2.0.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v1.1.1...v2.0.0) (2024-07-07)
+
+
+### Bug Fixes
+
+* **opendesk-keycloak-bootstrap:** Use normal job without hook ([b1dd562](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/b1dd562180d40ef4d0324954771cd488261392a2))
+
+
+### BREAKING CHANGES
+
+* **opendesk-keycloak-bootstrap:** Remove helm hook annotation
+
 ## [1.1.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v1.1.0...v1.1.1) (2024-07-07)
 
 

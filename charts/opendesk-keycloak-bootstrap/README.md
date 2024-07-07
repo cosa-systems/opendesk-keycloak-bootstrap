@@ -29,6 +29,7 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | additionalLabels | object | `{}` | Additional custom labels to add to all deployed objects. |
 | affinity | object | `{}` | Affinity for pod assignment Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity Note: podAffinityPreset, podAntiAffinityPreset, and  nodeAffinityPreset will be ignored when it's set |
 | cleanup.deletePodsOnSuccess | bool | `false` | Keep Pods/Job logs after successful run. |
+| cleanup.deletePodsOnSuccessTimeout | int | `1800` | Keep Pods/Job logs for following time. |
 | cleanup.keepPVCOnDelete | bool | `false` | Keep persistence on delete of this release. |
 | config.custom.clientScopes | list | `[]` | Create client scopes based on a YAML version of Keycloak's JSON config format |
 | config.custom.clients | list | `[]` | Create clients based on a YAML version of Keycloak's JSON config format |
