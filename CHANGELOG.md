@@ -1,3 +1,10 @@
+# [2.1.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.0.0...v2.1.0) (2024-07-15)
+
+
+### Features
+
+* **client:** Support for group based client access control using group>client_role>scope relation. ([7f05e4e](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/7f05e4e24cc796c6a14435278a573c7553caeb52))
+
 # [2.0.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v1.1.1...v2.0.0) (2024-07-07)
 
 
