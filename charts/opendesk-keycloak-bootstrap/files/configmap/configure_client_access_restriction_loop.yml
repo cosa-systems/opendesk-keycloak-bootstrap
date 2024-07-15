@@ -1,0 +1,145 @@
+# SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-License-Identifier: Apache-2.0
+---
+- ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+
+#
+# create client role
+# 1. get client_uuid
+# 2. POST https://keycloak/admin/realms/opendesk/clients/<client_uuid>/roles
+#
+- name: "Fetch client info"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "clientqueryresult"
+
+- name: "Set fact for client_uuid of {{ client_access_config.client }}"
+  ansible.builtin.set_fact:
+    client_uuid: "{{ clientqueryresult['json'] | json_query('[?clientId==`'+client_access_config.client+'`].id') | first }}"
+
+- name: "Create client role"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ client_uuid }}/roles"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "POST"
+    body_format: "json"
+    body: |
+      {
+        "name":"{{ client_access_config.role }}",
+        "description":"",
+        "attributes":{}
+      }
+    status_code: [201, 409]
+
+#
+# create client role <> scope mapping
+# 1. get clientscope_uuid
+# 2. get clientrole_uuid
+# 3. POST https://keycloak/admin/realms/opendesk/client-scopes/<clientscope_uuid>/scope-mappings/clients/<client_uuid>
+#    [{"id":"<clientrole_uuid>","name":"<client_access_config.role>","description":""}]
+#
+- name: "Fetch clientscope info"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/client-scopes"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "clientscopequeryresult"
+
+- name: "Set fact for clientscope_uuid of {{ client_access_config.scope }}"
+  ansible.builtin.set_fact:
+    clientscope_uuid: "{{ clientscopequeryresult['json'] | json_query('[?name==`'+client_access_config.scope+'`].id') | first }}"
+
+- name: "Fetch clientroles info"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ client_uuid }}/roles"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "clientrolesqueryresult"
+
+- name: "Set fact for clientrole_uuid of {{ client_access_config.role }}"
+  ansible.builtin.set_fact:
+    clientrole_uuid: "{{ clientrolesqueryresult['json'] | json_query('[?name==`'+client_access_config.role+'`].id') | first }}"
+
+- name: "Create client role <> scope mapping"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/client-scopes/{{ clientscope_uuid }}/scope-mappings/clients/{{ client_uuid }}"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "POST"
+    body_format: "json"
+    body: |
+      [
+        {
+          "id":"{{ clientrole_uuid }}",
+          "name":"{{ client_access_config.role }}",
+          "description":""
+        }
+      ]
+    status_code: [204, 409]
+
+#
+# map client role to (ldap) group
+# 1. create group or accept if it already exists (as we cannot force Keycloak to just get the groups from LDAP without users being sync'd)
+# 2. get group_uuid
+# 3. POST https://keycloak/admin/realms/opendesk/groups/9357d539-a2a3-48db-8345-e689a7bc2cda/role-mappings/clients/8432f49d-d820-4419-960d-b496dfbdc76c
+#    [{"id":"6bc7c56f-739f-415d-98e8-6222f7ffb5d3","name":"opendesk-matrix-access-control","description":""}]
+#
+- name: "Create group {{ client_access_config.group }} (accept if it already exists)"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/groups"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    body_format: "json"
+    method: "POST"
+    body: |
+      { "name": "{{ client_access_config.group }}" }
+    status_code: [201, 409]
+
+- name: "Fetch groups info"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/groups"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "groupsqueryresult"
+
+- name: "Set fact for group_uuid of group {{ client_access_config.group }}"
+  ansible.builtin.set_fact:
+    group_uuid: "{{ groupsqueryresult['json'] | json_query('[?name==`'+client_access_config.group+'`].id') | first }}"
+
+- name: "Map client role {{ client_access_config.role }} to group {{ client_access_config.group }}"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/groups/{{ group_uuid }}/role-mappings/clients/{{ client_uuid }}"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "POST"
+    body_format: "json"
+    body: |
+      [
+        {
+          "id":"{{ clientrole_uuid }}",
+          "name":"{{ client_access_config.role }}",
+          "description":""
+        }
+      ]
+    status_code: [204, 409]
+
+...

@@ -3,7 +3,7 @@
 ---
 - name: "Fetch client info"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"
@@ -17,17 +17,17 @@
       | first }}"
     clientid_intercom: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-intercom`].id')
       | first }}"
-    clientid_ncoidc: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-nextcloud`].id')
+    clientid_nextcloud: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-nextcloud`].id')
       | first }}"
-    clientid_as8oidc: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-oxappsuite`].id')
+    clientid_oxappsuite: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-oxappsuite`].id')
       | first }}"
     clientid_matrix: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-matrix`].id')
       | first }}"
 
 # Enable permissions on the given clients
-- name: "Enable permissions on client intercom"
+- name: "Enable permissions on client opendesk-intercom"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_intercom }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_intercom }}\
       /management/permissions"
     headers:
       Accept: "application/json"
@@ -36,9 +36,9 @@
     method: "PUT"
     body: "{ \"enabled\": true }"
     status_code: [200]
-- name: "Enable permissions on client ncoidc"
+- name: "Enable permissions on client opendesk-nextcloud"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_ncoidc }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_nextcloud }}\
       /management/permissions"
     headers:
       Accept: "application/json"
@@ -47,9 +47,9 @@
     method: "PUT"
     body: "{ \"enabled\": true }"
     status_code: [200]
-- name: "Enable permissions on client as8oidc"
+- name: "Enable permissions on client opendesk-oxappsuite"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_as8oidc }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_oxappsuite }}\
       /management/permissions"
     headers:
       Accept: "application/json"
@@ -58,9 +58,9 @@
     method: "PUT"
     body: "{ \"enabled\": true }"
     status_code: [200]
-- name: "Enable permissions on client matrix"
+- name: "Enable permissions on client opendesk-matrix"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_matrix }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_matrix }}\
       /management/permissions"
     headers:
       Accept: "application/json"
@@ -72,7 +72,7 @@
 
 - name: "Add intercom policy to management client"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
       /authz/resource-server/policy"
     headers:
       Accept: "application/json"
@@ -93,7 +93,7 @@
 
 - name: "Fetch policy info"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
       /authz/resource-server/policy"
     headers:
       Accept: "application/json"
@@ -106,9 +106,32 @@
   ansible.builtin.set_fact:
     intercom_policy_id: "{{ policyqueryresult['json'] | json_query('[?name==`opendesk-intercom`].id') | first }}"
 
+# We also set the intercom client on create, but when re-creating clients the assignment to the policy gets lost and
+# just assigning the client on create does not add the client when the policy already exists.
+- name: "Update the intercom policy to be sure it includes the intercom client"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
+      /authz/resource-server/policy/{{ intercom_policy_id }}"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    body_format: "json"
+    method: "PUT"
+    body: |
+      {
+        "name": "opendesk-intercom",
+        "type": "client",
+        "logic": "POSITIVE",
+        "decisionStrategy": "UNANIMOUS",
+        "config": {
+          "clients": "[\"opendesk-intercom\"]"
+        }
+      }
+    status_code: [201, 409]
+
 - name: "Fetch scope info"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
       /authz/resource-server/scope"
     headers:
       Accept: "application/json"
@@ -123,7 +146,7 @@
 
 - name: "Fetch permission scope info"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
       /authz/resource-server/permission/scope"
     headers:
       Accept: "application/json"

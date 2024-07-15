@@ -3,7 +3,7 @@
 ---
 - name: "Configure rememberMe options"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"
@@ -24,7 +24,7 @@
 
 - name: "Enable login with email"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"
@@ -39,7 +39,7 @@
 
 - name: "Enable 'save events' required for Keycloak Extensions Brute Force Protection"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"
@@ -53,7 +53,7 @@
 
 - name: "Explicitly set HTTP headers"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"

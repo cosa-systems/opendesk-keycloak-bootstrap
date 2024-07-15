@@ -3,7 +3,7 @@
 ---
 - name: "Create group {{ loop_group_name }} (and accept if it already exists)"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/groups"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/groups"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"
@@ -15,7 +15,7 @@
 
 - name: "Get groups"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/groups"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/groups"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"
@@ -29,7 +29,7 @@
 
 - name: "Add mapping for group {{ loop_group_name }} / {{ loop_group_id }} to 2FA role {{ two_factor_role_name }} / {{ two_factor_role_id }}"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/groups/{{ loop_group_id }}/role-mappings/realm"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/groups/{{ loop_group_id }}/role-mappings/realm"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"
@@ -39,7 +39,7 @@
       [
         {
             "id": "{{ two_factor_role_id }}",
-            "containerId": "{{ global_ums_realm }}",
+            "containerId": "{{ global_opendesk_realm }}",
             "clientRole": false,
             "composite": false,
             "name": "{{ two_factor_role_name }}"

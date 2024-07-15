@@ -3,7 +3,7 @@
 ---
 - name: "Get 2FA role"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_ums_realm }}/roles"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/roles"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"
