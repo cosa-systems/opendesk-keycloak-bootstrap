@@ -81,6 +81,25 @@ config:
     clientScopes: []
     # -- Create clients based on a YAML version of Keycloak's JSON config format
     clients: []
+  # In this section you can define various objects based on Keycloak's config format
+  # The object classes are processed by the Python script `kcom.py` that is shipped
+  # with the Helm charts image. If you add new classes here you want to ensure they
+  # are supported by the script.
+  opendesk:
+    # -- Create client scopes based on a YAML version of Keycloak's JSON config format
+    clientScopes: []
+    # -- Create clients based on a YAML version of Keycloak's JSON config format
+    clients: []
+  # As `kcom.py` does reconciliation we delete unexpected objects from Keycloak's configuration.
+  # Define the names of the objects you do not define in the `custom` and `opendesk` areas above,
+  # that you still would like to keep, e.g. because they are Keycloak defaults or manually maintained.
+  managed:
+    # -- Managed client scopes that should be kept during reconciliation.
+    clientScopes: [ 'acr', 'web-origins', 'email', 'profile', 'microprofile-jwt', 'role_list', 'offline_access', 'roles', 'address', 'phone' ]
+    # -- Managed clients that should be kept during reconciliation.
+    clients: [ 'UMC', 'guardian-management-api', 'guardian-scripts', 'guardian-ui', '${client_account}', '${client_account-console}', '${client_admin-cli}', '${client_broker}', '${client_realm-management}', '${client_security-admin-console}' ]
+
+  default:
   # -- Extended 2FA configuration
   twoFactorSettings:
     # -- Enable 2FA for given LDAP group(s), just use group Names like `Domain Admin` etc.
@@ -166,10 +185,10 @@ imagePullSecrets: []
 # Container image section.
 image:
   # -- Container registry address. This setting has higher precedence than global.registry.
-  registry: ""
+  registry: "registry.opencode.de"
 
   # -- Container repository string.
-  repository: "souvap/tooling/images/opendesk-keycloak-bootstrap"
+  repository: "bmi/opendesk/components/platform-development/images/opendesk-keycloak-bootstrap"
 
   # -- Define an ImagePullPolicy.
   #
@@ -186,7 +205,7 @@ image:
   imagePullPolicy: "IfNotPresent"
 
   # -- Define image tag.
-  tag: "1.0.0"
+  tag: "latest"
 
 # -- Node labels for pod assignment
 # Ref: https://kubernetes.io/docs/user-guide/node-selection/
