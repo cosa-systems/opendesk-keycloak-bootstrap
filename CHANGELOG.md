@@ -1,3 +1,10 @@
+## [2.1.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.0...v2.1.1) (2024-08-07)
+
+
+### Bug Fixes
+
+* **values.yaml:** Add missing `opendesk` and `managed` config sections. ([5f0165e](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/5f0165ee28615f1ee377560a14756cbc253475c2))
+
 # [2.1.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.0.0...v2.1.0) (2024-07-15)
 
 

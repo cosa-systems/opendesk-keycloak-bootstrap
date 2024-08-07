@@ -35,11 +35,16 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | config.custom.clients | list | `[]` | Create clients based on a YAML version of Keycloak's JSON config format |
 | config.debug.enabled | bool | `false` | Enable debug output of included Ansible scripts |
 | config.debug.pauseBeforeScriptStart | int | `0` | Seconds for the job to pause before starting the actual bootstrapping. |
+| config.default | string | `nil` |  |
 | config.keycloak.adminPassword | string | `""` | The Keycloak master realm admin user's password as input for the secret |
 | config.keycloak.adminUser | string | `"kcadmin"` | The Keycloak master realm admin user |
 | config.keycloak.intraCluster.enabled | bool | `true` | Enable internal communication |
 | config.keycloak.intraCluster.internalBaseUrl | string | `"http://ums-keycloak:8080"` | Internal hostname including protocol and port Currently only http and https with valid certificates are supported. |
 | config.keycloak.realm | string | `"opendesk"` | The name of the realm that is going to contain all the configuration |
+| config.managed.clientScopes | list | `["acr","web-origins","email","profile","microprofile-jwt","role_list","offline_access","roles","address","phone"]` | Managed client scopes that should be kept during reconciliation. |
+| config.managed.clients | list | `["UMC","guardian-management-api","guardian-scripts","guardian-ui","${client_account}","${client_account-console}","${client_admin-cli}","${client_broker}","${client_realm-management}","${client_security-admin-console}"]` | Managed clients that should be kept during reconciliation. |
+| config.opendesk.clientScopes | list | `[]` | Create client scopes based on a YAML version of Keycloak's JSON config format |
+| config.opendesk.clients | list | `[]` | Create clients based on a YAML version of Keycloak's JSON config format |
 | config.realmSettings | object | `{"accessTokenLifespan":300,"rememberMe":true,"ssoSessionIdleTimeout":14400,"ssoSessionIdleTimeoutRememberMe":28800,"ssoSessionMaxLifespan":57600,"ssoSessionMaxLifespanRememberMe":1209600}` | Configure the realm details |
 | config.realmSettings.accessTokenLifespan | int | `300` | Please lookup "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
 | config.realmSettings.rememberMe | bool | `true` | Enable "Remember Me" option making the user's Keycloak session persistant based on the RememberMe related parameters below |
@@ -67,9 +72,9 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | global.imagePullSecrets | list | `[]` | Credentials to fetch images from private registry Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/  imagePullSecrets:   - "docker-registry"  |
 | global.registry | string | `"registry.opencode.de"` | Container registry address. |
 | image.imagePullPolicy | string | `"IfNotPresent"` | Define an ImagePullPolicy.  Ref.: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy  "IfNotPresent" => The image is pulled only if it is not already present locally. "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved             digest, and uses that image to launch the container. "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the            kubelet attempts to start the container; otherwise, startup fails  |
-| image.registry | string | `""` | Container registry address. This setting has higher precedence than global.registry. |
-| image.repository | string | `"souvap/tooling/images/opendesk-keycloak-bootstrap"` | Container repository string. |
-| image.tag | string | `"1.0.0"` | Define image tag. |
+| image.registry | string | `"registry.opencode.de"` | Container registry address. This setting has higher precedence than global.registry. |
+| image.repository | string | `"bmi/opendesk/components/platform-development/images/opendesk-keycloak-bootstrap"` | Container repository string. |
+| image.tag | string | `"latest"` | Define image tag. |
 | imagePullSecrets | list | `[]` | Credentials to fetch images from private registry Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/  imagePullSecrets:   - "docker-registry"  |
 | nodeSelector | object | `{}` | Node labels for pod assignment Ref: https://kubernetes.io/docs/user-guide/node-selection/ |
 | podAnnotations | object | `{}` | Pod Annotations. Ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
