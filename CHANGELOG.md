@@ -1,3 +1,10 @@
+## [2.1.2](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.1...v2.1.2) (2024-09-20)
+
+
+### Bug Fixes
+
+* **ansible:** Wait for intercom service before configuring client permissions. ([0be0cb8](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/0be0cb88cb5868d2800dfcd439766d8579c73bd5))
+
 ## [2.1.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.0...v2.1.1) (2024-08-07)
 
 

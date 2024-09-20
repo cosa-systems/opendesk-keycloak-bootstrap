@@ -35,7 +35,6 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | config.custom.clients | list | `[]` | Create clients based on a YAML version of Keycloak's JSON config format |
 | config.debug.enabled | bool | `false` | Enable debug output of included Ansible scripts |
 | config.debug.pauseBeforeScriptStart | int | `0` | Seconds for the job to pause before starting the actual bootstrapping. |
-| config.default | string | `nil` |  |
 | config.keycloak.adminPassword | string | `""` | The Keycloak master realm admin user's password as input for the secret |
 | config.keycloak.adminUser | string | `"kcadmin"` | The Keycloak master realm admin user |
 | config.keycloak.intraCluster.enabled | bool | `true` | Enable internal communication |
@@ -67,6 +66,7 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | extraVolumeMounts | list | `[]` | Optionally specify an extra list of additional volumeMounts. |
 | extraVolumes | list | `[]` | Optionally specify an extra list of additional volumes. |
 | global.domain | string | `"example.org"` | The Top-Level-Domain (TLD) name which is used in f.e. in Ingress component. |
+| global.hosts.intercomService | string | `"ics"` | Subdomain for Intercom Service, results in "https://{{ intercomservice }}.{{ domain }}". |
 | global.hosts.keycloak | string | `"id"` | Subdomain for Keycloak, results in "https://{{ keycloak }}.{{ domain }}". |
 | global.hosts.portal | string | `"portal"` | Subdomain for openDesk portal, results in "https://{{ portal }}.{{ domain }}". |
 | global.imagePullSecrets | list | `[]` | Credentials to fetch images from private registry Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/  imagePullSecrets:   - "docker-registry"  |
