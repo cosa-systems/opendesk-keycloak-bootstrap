@@ -13,6 +13,8 @@ global:
     keycloak: "id"
     # -- Subdomain for openDesk portal, results in "https://{{ portal }}.{{ domain }}".
     portal: "portal"
+    # -- Subdomain for Intercom Service, results in "https://{{ intercomservice }}.{{ domain }}".
+    intercomService: "ics"
 
   # -- Container registry address.
   registry: "registry.opencode.de"
@@ -99,7 +101,6 @@ config:
     # -- Managed clients that should be kept during reconciliation.
     clients: [ 'UMC', 'guardian-management-api', 'guardian-scripts', 'guardian-ui', '${client_account}', '${client_account-console}', '${client_admin-cli}', '${client_broker}', '${client_realm-management}', '${client_security-admin-console}' ]
 
-  default:
   # -- Extended 2FA configuration
   twoFactorSettings:
     # -- Enable 2FA for given LDAP group(s), just use group Names like `Domain Admin` etc.

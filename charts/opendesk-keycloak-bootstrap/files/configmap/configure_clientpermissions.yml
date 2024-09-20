@@ -1,6 +1,16 @@
+# SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 # SPDX-License-Identifier: Apache-2.0
 ---
+- name: "Ensure IntercomService is up and running with retries."
+  ansible.builtin.uri:
+    url: "{{ global_intercom_url }}"
+    method: "GET"
+  register: "ics_alive_response"
+  until: "ics_alive_response.status == 200"
+  retries: 60
+  delay: 10
+
 - name: "Fetch client info"
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients"
