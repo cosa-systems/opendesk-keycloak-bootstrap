@@ -1,3 +1,10 @@
+## [2.1.3](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.2...v2.1.3) (2024-10-10)
+
+
+### Bug Fixes
+
+* Set explicit group for Videconference access. ([4f724a6](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/4f724a6e4ca7e4287ba64780c9c30c2b7710b798))
+
 ## [2.1.2](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.1...v2.1.2) (2024-09-20)
 
 
