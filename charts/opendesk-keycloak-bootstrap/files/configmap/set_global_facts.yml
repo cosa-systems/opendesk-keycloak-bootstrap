@@ -23,7 +23,7 @@
       - client: "opendesk-jitsi"
         scope: "opendesk-jitsi-scope"
         role: "opendesk-jitsi-access-control"
-        group: "managed-by-attribute-Livecollaboration"
+        group: "managed-by-attribute-Videoconference"
       - client: "opendesk-xwiki"
         scope: "opendesk-xwiki-scope"
         role: "opendesk-xwiki-access-control"
