@@ -1,3 +1,10 @@
+## [2.1.4](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.3...v2.1.4) (2024-11-26)
+
+
+### Bug Fixes
+
+* Add token_exchange permission to XWiki ([72e38c1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/72e38c1a5aa3c90353a1374b7123e7f9d5a3acfc))
+
 ## [2.1.3](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.2...v2.1.3) (2024-10-10)
 
 
