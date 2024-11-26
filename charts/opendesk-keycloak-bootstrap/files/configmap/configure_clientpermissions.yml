@@ -33,6 +33,8 @@
       | first }}"
     clientid_matrix: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-matrix`].id')
       | first }}"
+    clientid_xwiki: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-xwiki`].id')
+      | first }}"
 
 # Enable permissions on the given clients
 - name: "Enable permissions on client opendesk-intercom"
@@ -71,6 +73,17 @@
 - name: "Enable permissions on client opendesk-matrix"
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_matrix }}\
+      /management/permissions"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    body_format: "json"
+    method: "PUT"
+    body: "{ \"enabled\": true }"
+    status_code: [200]
+- name: "Enable permissions on client opendesk-xwiki"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_xwiki }}\
       /management/permissions"
     headers:
       Accept: "application/json"
