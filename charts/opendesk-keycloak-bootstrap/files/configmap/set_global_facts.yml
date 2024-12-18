@@ -45,6 +45,17 @@
         role: "opendesk-dovecot-access-control"
         group: "managed-by-attribute-Groupware"
 
+- name: "Append optional component entry"
+  set_fact:
+    client_access_restriction_details: "{{ client_access_restriction_details + [ new_entry ] }}"
+  vars:
+    new_entry:
+      client: "opendesk-notes"
+      scope: "opendesk-notes-scope"
+      role: "opendesk-notes-access-control"
+      group: "managed-by-attribute-Notes"
+  when: "global_cfgobj.config.componentEnabled.notes"
+
 - name: "Global: Set Keycloak URL for external connection"
   ansible.builtin.set_fact:
     global_keycloak_url: "https://{{ global_keycloak_host }}"
