@@ -1,3 +1,10 @@
+# [2.2.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.4...v2.2.0) (2024-12-18)
+
+
+### Features
+
+* Add support for optional Notes app ([0c8268f](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/0c8268f5015e91a1dd0c593765c915a2405a84bd))
+
 ## [2.1.4](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.3...v2.1.4) (2024-11-26)
 
 
