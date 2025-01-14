@@ -52,12 +52,23 @@ cleanup:
 #
 # Keycloak configuration.
 config:
+  # In this section you can define various objects based on Keycloaks config format
+  # The object classes are processed by the Python script `kcom.py` that is shipped
+  # with the Helm charts image. If you add new classes here you want to ensure they
+  # are supported by the script.
+  custom:
+    # -- Create client scopes based on a YAML version of Keycloak's JSON config format
+    clientScopes: []
+    # -- Create clients based on a YAML version of Keycloak's JSON config format
+    clients: []
+
   # Debugging related settings
   debug:
     # -- Enable debug output of included Ansible scripts
     enabled: false
     # -- Seconds for the job to pause before starting the actual bootstrapping.
     pauseBeforeScriptStart: 0
+
   # Keycloak specific attributes.
   keycloak:
     # Allow cluster internal communication for configuring Keycloak.
@@ -74,24 +85,7 @@ config:
     adminPassword: ""
     # -- The name of the realm that is going to contain all the configuration
     realm: "opendesk"
-  # In this section you can define various objects based on Keycloaks config format
-  # The object classes are processed by the Python script `kcom.py` that is shipped
-  # with the Helm charts image. If you add new classes here you want to ensure they
-  # are supported by the script.
-  custom:
-    # -- Create client scopes based on a YAML version of Keycloak's JSON config format
-    clientScopes: []
-    # -- Create clients based on a YAML version of Keycloak's JSON config format
-    clients: []
-  # In this section you can define various objects based on Keycloak's config format
-  # The object classes are processed by the Python script `kcom.py` that is shipped
-  # with the Helm charts image. If you add new classes here you want to ensure they
-  # are supported by the script.
-  opendesk:
-    # -- Create client scopes based on a YAML version of Keycloak's JSON config format
-    clientScopes: []
-    # -- Create clients based on a YAML version of Keycloak's JSON config format
-    clients: []
+
   # As `kcom.py` does reconciliation we delete unexpected objects from Keycloak's configuration.
   # Define the names of the objects you do not define in the `custom` and `opendesk` areas above,
   # that you still would like to keep, e.g. because they are Keycloak defaults or manually maintained.
@@ -101,14 +95,21 @@ config:
     # -- Managed clients that should be kept during reconciliation.
     clients: [ 'UMC', 'guardian-management-api', 'guardian-scripts', 'guardian-ui', '${client_account}', '${client_account-console}', '${client_admin-cli}', '${client_broker}', '${client_realm-management}', '${client_security-admin-console}' ]
 
-  # -- Extended 2FA configuration
-  twoFactorSettings:
-    # -- Enable 2FA for given LDAP group(s), just use group Names like `Domain Admin` etc.
-    # this requires the name of Keycloak's 2FA roles to be provided as well, see `roleName`.
-    # Note: This does not remove 2FA for groups.
-    additionalGroups: []
-    # -- You must provide Keycloak's 2FA role name when enabling 2FA for groups using the `2faGroups` Array.
-    roleName: "2FA role"
+  # In this section you can define various objects based on Keycloak's config format
+  # The object classes are processed by the Python script `kcom.py` that is shipped
+  # with the Helm charts image. If you add new classes here you want to ensure they
+  # are supported by the script.
+  opendesk:
+    # -- Create client scopes based on a YAML version of Keycloak's JSON config format
+    clientScopes: []
+    # -- Create clients based on a YAML version of Keycloak's JSON config format
+    clients: []
+
+  # -- Groups that will be pre-created in Keycloak to avoid race conditions when first users login
+  # to an openDesk deployment in parallel and Keycloak tries to create the groups in parallel as
+  # well resulting in a `org.keycloak.models.ModelDuplicateException: Duplicate resource error`
+  precreateGroups: [ 'Domain Admins', 'Domain Users' ]
+
   # -- Configure the realm details
   realmSettings:
     # -- Please lookup "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/
@@ -129,6 +130,15 @@ config:
     # -- Please lookup "SSO Session Max Remember Me" in https://www.keycloak.org/docs/latest/server_admin/
     # for the latest upstream documentation.
     ssoSessionMaxLifespanRememberMe: 1209600
+
+  # -- Extended 2FA configuration
+  twoFactorSettings:
+    # -- Enable 2FA for given LDAP group(s), just use group Names like `Domain Admin` etc.
+    # this requires the name of Keycloak's 2FA roles to be provided as well, see `roleName`.
+    # Note: This does not remove 2FA for groups.
+    additionalGroups: []
+    # -- You must provide Keycloak's 2FA role name when enabling 2FA for groups using the `2faGroups` Array.
+    roleName: "2FA role"
 
 # Security Context.
 # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/

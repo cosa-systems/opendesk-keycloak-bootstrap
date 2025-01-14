@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: "Creating groups in loop"
+  ansible.builtin.include_tasks: "configure_create_groups_loop.yml"
+  loop: "{{ precreate_groups }}"
+  loop_control:
+    loop_var: "loop_group_name"
+...

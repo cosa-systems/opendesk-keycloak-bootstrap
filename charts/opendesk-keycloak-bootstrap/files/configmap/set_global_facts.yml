@@ -13,6 +13,7 @@
     global_portal_url: "https://{{ global_cfgobj.global.hosts.portal }}.{{ global_cfgobj.global.domain }}"
     global_intercom_url: "https://{{ global_cfgobj.global.hosts.intercomService }}.{{ global_cfgobj.global.domain }}"
     global_opendesk_realm: "{{ global_cfgobj.config.keycloak.realm }}"
+    precreate_groups: "{{ global_cfgobj.config.precreateGroups }}"
     two_factor_role_name: "{{ global_cfgobj.config.twoFactorSettings.roleName }}"
     two_factor_additional_groups: "{{ [] +  global_cfgobj.config.twoFactorSettings.additionalGroups }}"
     client_access_restriction_details:

@@ -17,10 +17,13 @@
     - ansible.builtin.include_tasks: "./configure_realmsettings.yml"
 
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
-    # To configure the client permissions we require the intercomservice
+    # To configure the client permissions we require the Intercom Service
     # deployment to be completed as it creates the related OIDC client
     # that is required for the client permission setup.
     - ansible.builtin.include_tasks: "./configure_clientpermissions.yml"
+
+    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+    - ansible.builtin.include_tasks: "./configure_create_groups.yml"
 
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     - ansible.builtin.include_tasks: "./configure_set_2fa_groups.yml"

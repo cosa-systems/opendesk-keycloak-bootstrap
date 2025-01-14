@@ -1,18 +1,6 @@
 # SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-License-Identifier: Apache-2.0
 ---
-- name: "Create group {{ loop_group_name }} (and accept if it already exists)"
-  ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/groups"
-    headers:
-      Accept: "application/json"
-      Authorization: "Bearer {{ global_accesstoken }}"
-    body_format: "json"
-    method: "POST"
-    body: |
-      { "name": "{{ loop_group_name }}" }
-    status_code: [201, 409]
-
 - name: "Get groups"
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/groups"

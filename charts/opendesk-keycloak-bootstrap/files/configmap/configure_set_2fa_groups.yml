@@ -15,7 +15,13 @@
   ansible.builtin.set_fact:
     two_factor_role_id: "{{ rolesqueryresult['json'] | json_query('[?name==`'+two_factor_role_name+'`].id') | first }}"
 
-- name: "Adding groups now to 2FA role"
+- name: "Creating 2FA groups in loop"
+  ansible.builtin.include_tasks: "configure_create_groups_loop.yml"
+  loop: "{{ two_factor_additional_groups }}"
+  loop_control:
+    loop_var: "loop_group_name"
+
+- name: "Adding mapping groups to 2FA role in loop"
   ansible.builtin.include_tasks: "configure_set_2fa_groups_loop.yml"
   loop: "{{ two_factor_additional_groups }}"
   loop_control:
