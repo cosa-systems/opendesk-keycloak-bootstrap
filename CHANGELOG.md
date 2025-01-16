@@ -1,3 +1,10 @@
+## [2.2.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.2.0...v2.2.1) (2025-01-16)
+
+
+### Bug Fixes
+
+* **groups:** Pre-create standard groups to avoid race conditions in test automation ([4c59f1e](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/4c59f1e5f5b827aad7a317e96beea32afddc854b))
+
 # [2.2.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.1.4...v2.2.0) (2024-12-18)
 
 
