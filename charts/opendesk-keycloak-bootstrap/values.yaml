@@ -52,6 +52,22 @@ cleanup:
 #
 # Keycloak configuration.
 config:
+  # -- Most applications do not implement OIDC based authorization yet. To block access
+  # to an application it is possible to provide the OIDC claims (defined within a given OIDC
+  # scope) required by the application based only when the user is member of a defined group.
+  # This can be configured here.
+  # The `applicationIdentifier` can be freely chosen, you then need to define the names of
+  # the OIDC `client` and `scope`, the `group` defines which membership a user must have to
+  # allow the `scope` to be part of the OIDC token. And the `role` is the Keycloak internal
+  # role name required the is required to setup the mapping between group membership and
+  # scope permission.
+  # ```
+  # applicationIdentifier:
+  #   client: "opendesk-matrix"
+  #   scope: "opendesk-matrix-scope"
+  #   group: "managed-by-attribute-Livecollaboration"
+  #   role: "opendesk-matrix-access-control"
+  clientAccessRestrictions: {}
   # In this section you can define various objects based on Keycloaks config format
   # The object classes are processed by the Python script `kcom.py` that is shipped
   # with the Helm charts image. If you add new classes here you want to ensure they

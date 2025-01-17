@@ -4,7 +4,7 @@
 
 - name: "Configuring client role/group based required scopes to restrict access based on group membership"
   ansible.builtin.include_tasks: "configure_client_access_restriction_loop.yml"
-  loop: "{{ client_access_restriction_details }}"
+  loop: "{{ client_access_restriction_details.values() }}"
   loop_control:
     loop_var: "client_access_config"
 
