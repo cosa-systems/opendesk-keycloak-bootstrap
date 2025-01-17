@@ -1,3 +1,10 @@
+## [2.2.2](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.2.1...v2.2.2) (2025-01-17)
+
+
+### Bug Fixes
+
+* Move client_access_restrictions from hardcoded to templating as `config.clientAccessRestrictions` ([a5b2e12](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/a5b2e12a1a8fbe6e3373ff53283304eb39205674))
+
 ## [2.2.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.2.0...v2.2.1) (2025-01-16)
 
 
