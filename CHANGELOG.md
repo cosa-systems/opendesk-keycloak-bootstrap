@@ -1,3 +1,10 @@
+## [2.2.3](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.2.2...v2.2.3) (2025-01-19)
+
+
+### Bug Fixes
+
+* **clientAccessRestrictions:** Support for empty dict/null ([a42ea71](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/a42ea71174f4fb8377502ed45e5fbfe119f5b5a2))
+
 ## [2.2.2](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.2.1...v2.2.2) (2025-01-17)
 
 
