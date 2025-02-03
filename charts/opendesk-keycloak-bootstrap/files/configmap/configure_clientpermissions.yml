@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-FileCopyrightText: 2024-2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 # SPDX-License-Identifier: Apache-2.0
 ---
@@ -21,81 +21,24 @@
     status_code: [200]
   register: "clientqueryresult"
 
-- name: "Set clientids"
+- name: "Extract client IDs and add to list"
   ansible.builtin.set_fact:
-    clientid_realmmanagement: "{{ clientqueryresult['json'] | json_query('[?clientId==`realm-management`].id')
-      | first }}"
-    clientid_intercom: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-intercom`].id')
-      | first }}"
-    clientid_nextcloud: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-nextcloud`].id')
-      | first }}"
-    clientid_oxappsuite: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-oxappsuite`].id')
-      | first }}"
-    clientid_matrix: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-matrix`].id')
-      | first }}"
-    clientid_xwiki: "{{ clientqueryresult['json'] | json_query('[?clientId==`opendesk-xwiki`].id')
-      | first }}"
+    client_ids: "{{ global_cfgobj.config.opendesk.clients | map(attribute='clientId') | list }}"
 
-# Enable permissions on the given clients
-- name: "Enable permissions on client opendesk-intercom"
-  ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_intercom }}\
-      /management/permissions"
-    headers:
-      Accept: "application/json"
-      Authorization: "Bearer {{ global_accesstoken }}"
-    body_format: "json"
-    method: "PUT"
-    body: "{ \"enabled\": true }"
-    status_code: [200]
-- name: "Enable permissions on client opendesk-nextcloud"
-  ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_nextcloud }}\
-      /management/permissions"
-    headers:
-      Accept: "application/json"
-      Authorization: "Bearer {{ global_accesstoken }}"
-    body_format: "json"
-    method: "PUT"
-    body: "{ \"enabled\": true }"
-    status_code: [200]
-- name: "Enable permissions on client opendesk-oxappsuite"
-  ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_oxappsuite }}\
-      /management/permissions"
-    headers:
-      Accept: "application/json"
-      Authorization: "Bearer {{ global_accesstoken }}"
-    body_format: "json"
-    method: "PUT"
-    body: "{ \"enabled\": true }"
-    status_code: [200]
-- name: "Enable permissions on client opendesk-matrix"
-  ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_matrix }}\
-      /management/permissions"
-    headers:
-      Accept: "application/json"
-      Authorization: "Bearer {{ global_accesstoken }}"
-    body_format: "json"
-    method: "PUT"
-    body: "{ \"enabled\": true }"
-    status_code: [200]
-- name: "Enable permissions on client opendesk-xwiki"
-  ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_xwiki }}\
-      /management/permissions"
-    headers:
-      Accept: "application/json"
-      Authorization: "Bearer {{ global_accesstoken }}"
-    body_format: "json"
-    method: "PUT"
-    body: "{ \"enabled\": true }"
-    status_code: [200]
+- name: "Looping now"
+  ansible.builtin.include_tasks: "configure_clientpermissions_enable_loop.yml"
+  loop: "{{ client_ids }}"
+  loop_control:
+    loop_var: "client_id"
+
+- name: "Set KC internal client ID for realm_management"
+  ansible.builtin.set_fact:
+    kcint_clientid_realmmanagement: "{{ clientqueryresult['json'] | json_query('[?clientId==`realm-management`].id')
+      | first }}"
 
 - name: "Add intercom policy to management client"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ kcint_clientid_realmmanagement }}\
       /authz/resource-server/policy"
     headers:
       Accept: "application/json"
@@ -116,7 +59,7 @@
 
 - name: "Fetch policy info"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ kcint_clientid_realmmanagement }}\
       /authz/resource-server/policy"
     headers:
       Accept: "application/json"
@@ -133,7 +76,7 @@
 # just assigning the client on create does not add the client when the policy already exists.
 - name: "Update the intercom policy to be sure it includes the intercom client"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ kcint_clientid_realmmanagement }}\
       /authz/resource-server/policy/{{ intercom_policy_id }}"
     headers:
       Accept: "application/json"
@@ -154,7 +97,7 @@
 
 - name: "Fetch scope info"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ kcint_clientid_realmmanagement }}\
       /authz/resource-server/scope"
     headers:
       Accept: "application/json"
@@ -169,7 +112,7 @@
 
 - name: "Fetch permission scope info"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ kcint_clientid_realmmanagement }}\
       /authz/resource-server/permission/scope"
     headers:
       Accept: "application/json"
@@ -185,7 +128,7 @@
       | list | json_query('[*].name') }}"
 
 - name: "Looping now"
-  ansible.builtin.include_tasks: "configure_clientpermissions_loop.yml"
+  ansible.builtin.include_tasks: "configure_clientpermissions_configure_loop.yml"
   loop: "{{ permissionscopequeryresult['json'] | selectattr('name', 'contains', 'token-exchange.permission.client.')
     | list | json_query('[*].name') }}"
   loop_control:

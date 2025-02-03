@@ -7,7 +7,7 @@
 
 - name: "Get tokenExchange_permission_scope_id_for_loop_client"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ kcint_clientid_realmmanagement }}\
       /authz/resource-server/permission/scope"
     headers:
       Accept: "application/json"
@@ -23,7 +23,7 @@
 
 - name: "Get resource_id_for_loop_client"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ kcint_clientid_realmmanagement }}\
       /authz/resource-server/resource"
     headers:
       Accept: "application/json"
@@ -58,7 +58,7 @@
 
 - name: "set the policy (realm_management > authorization > permissions > token-xchange.permission.client.<clientid>"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ clientid_realmmanagement }}\
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/clients/{{ kcint_clientid_realmmanagement }}\
       /authz/resource-server/permission/scope/{{ tokenExchange_permission_scope_id_for_loop_client }}"
     headers:
       Accept: "application/json"
