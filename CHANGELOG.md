@@ -1,3 +1,10 @@
+# [2.3.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.2.3...v2.3.0) (2025-02-03)
+
+
+### Features
+
+* Support for selective apps ([d04aabc](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/d04aabc30544e4852612042416ef9bcce7ed9139))
+
 ## [2.2.3](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.2.2...v2.2.3) (2025-01-19)
 
 
