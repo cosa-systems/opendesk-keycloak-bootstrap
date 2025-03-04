@@ -1,4 +1,5 @@
 {{/*
+SPDX-FileCopyrightText: 2024-2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 SPDX-License-Identifier: Apache-2.0
 */}}
@@ -13,3 +14,20 @@ metadata:
 stringData:
   values.yaml: |
     {{ .Values | toYaml | nindent 4 }}
+...
+{{- if not .Values.config.keycloak.admin.secret.name }}
+---
+kind: "Secret"
+apiVersion: "v1"
+metadata:
+  name: "{{ include "common.names.fullname" . }}-admin-creds"
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+
+stringData:
+  admin.yaml: |
+    username: {{ .Values.config.keycloak.admin.values.username }}
+    password: {{ .Values.config.keycloak.admin.values.password }}
+...
+{{- end }}
+

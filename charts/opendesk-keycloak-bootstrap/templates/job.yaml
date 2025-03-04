@@ -1,5 +1,5 @@
 {{/*
-SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+SPDX-FileCopyrightText: 2024-2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 SPDX-License-Identifier: Apache-2.0
 */}}
@@ -75,6 +75,9 @@ spec:
             - mountPath: "/app/values.yaml"
               name: "secrets-volume"
               subPath: "values.yaml"
+            - mountPath: "/app/admin.yaml"
+              name: "admin-creds"
+              subPath: "admin.yaml"
             - mountPath: "/app/ansible"
               name: "ansible-directory-volume"
             - mountPath: "/tmp"
@@ -98,6 +101,9 @@ spec:
         - name: "secrets-volume"
           secret:
             secretName: "{{ include "common.names.fullname" . }}"
+        - name: "admin-creds"
+          secret:
+            secretName: {{ .Values.config.keycloak.admin.secret.name | default (printf "%s-%s" (include "common.names.fullname" .) "admin-creds") | quote }}
         - name: "temp-dir"
           emptyDir:
             sizeLimit: "20Mi"

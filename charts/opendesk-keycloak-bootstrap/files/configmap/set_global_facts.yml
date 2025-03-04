@@ -1,14 +1,16 @@
+# SPDX-FileCopyrightText: 2024-2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 # SPDX-License-Identifier: Apache-2.0
 ---
 - name: "Global: Read and parse config.yaml"
   ansible.builtin.set_fact:
     global_cfgobj: "{{ lookup('file', '/app/values.yaml') | from_yaml }}"
+    global_admin: "{{ lookup ('file', '/app/admin.yaml') | from_yaml }}"
 
 - name: "Global: Set variables"
   ansible.builtin.set_fact:
-    global_admin_username: "{{ global_cfgobj.config.keycloak.adminUser }}"
-    global_admin_password: "{{ global_cfgobj.config.keycloak.adminPassword }}"
+    global_admin_username: "{{ global_admin.username }}"
+    global_admin_password: "{{ global_admin.password }}"
     global_keycloak_host: "{{ global_cfgobj.global.hosts.keycloak }}.{{ global_cfgobj.global.domain }}"
     global_portal_url: "https://{{ global_cfgobj.global.hosts.portal }}.{{ global_cfgobj.global.domain }}"
     global_intercom_url: "https://{{ global_cfgobj.global.hosts.intercomService }}.{{ global_cfgobj.global.domain }}"

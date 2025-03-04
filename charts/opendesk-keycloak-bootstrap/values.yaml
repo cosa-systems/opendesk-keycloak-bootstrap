@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-FileCopyrightText: 2024-2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 # SPDX-License-Identifier: Apache-2.0
 ---
@@ -95,10 +95,21 @@ config:
       # -- Internal hostname including protocol and port
       # Currently only http and https with valid certificates are supported.
       internalBaseUrl: "http://ums-keycloak:8080"
-    # -- The Keycloak master realm admin user
-    adminUser: "kcadmin"
-    # -- The Keycloak master realm admin user's password as input for the secret
-    adminPassword: ""
+    admin:
+      # Plain values for admin username and admin password
+      values:
+        # -- The Keycloak master realm admin user
+        username: "kcadmin"
+        # -- The Keycloak master realm admin user's password as input for the secret
+        password: ""
+      # Admin user credentials from existing secret (higher precedence over plain values)
+      secret: 
+        # -- Secret name containing admin credentials.
+        # -- Format has to be:
+        # -- admin.yaml: |
+        # --   username:
+        # --   password:
+        name: ""
     # -- The name of the realm that is going to contain all the configuration
     realm: "opendesk"
 
