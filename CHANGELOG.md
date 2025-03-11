@@ -1,3 +1,10 @@
+# [2.4.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.3.0...v2.4.0) (2025-03-11)
+
+
+### Features
+
+* Provide admin credentials in a secret ([d8fcd44](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/d8fcd44a028fdc08fe358e034f1d1edb904b2728))
+
 # [2.3.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.2.3...v2.3.0) (2025-02-03)
 
 

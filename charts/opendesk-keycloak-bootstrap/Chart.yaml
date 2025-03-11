@@ -5,7 +5,7 @@ apiVersion: "v2"
 description: "This helm chart contains a bootstrap job for configuration of the Keycloak within openDesk"
 name: "opendesk-keycloak-bootstrap"
 type: "application"
-version: "2.3.0"
+version: "2.4.0"
 keywords:
   - "keycloak"
   - "opendesk"

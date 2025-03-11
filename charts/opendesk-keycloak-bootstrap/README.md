@@ -36,8 +36,9 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | config.custom.clients | list | `[]` | Create clients based on a YAML version of Keycloak's JSON config format |
 | config.debug.enabled | bool | `false` | Enable debug output of included Ansible scripts |
 | config.debug.pauseBeforeScriptStart | int | `0` | Seconds for the job to pause before starting the actual bootstrapping. |
-| config.keycloak.adminPassword | string | `""` | The Keycloak master realm admin user's password as input for the secret |
-| config.keycloak.adminUser | string | `"kcadmin"` | The Keycloak master realm admin user |
+| config.keycloak.admin.secret.name | string | `""` | password: |
+| config.keycloak.admin.values.password | string | `""` | The Keycloak master realm admin user's password as input for the secret |
+| config.keycloak.admin.values.username | string | `"kcadmin"` | The Keycloak master realm admin user |
 | config.keycloak.intraCluster.enabled | bool | `true` | Enable internal communication |
 | config.keycloak.intraCluster.internalBaseUrl | string | `"http://ums-keycloak:8080"` | Internal hostname including protocol and port Currently only http and https with valid certificates are supported. |
 | config.keycloak.realm | string | `"opendesk"` | The name of the realm that is going to contain all the configuration |
