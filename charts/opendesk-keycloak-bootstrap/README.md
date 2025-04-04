@@ -47,13 +47,30 @@ helm install my-release opendesk-keycloak-bootstrap/opendesk-keycloak-bootstrap
 | config.opendesk.clientScopes | list | `[]` | Create client scopes based on a YAML version of Keycloak's JSON config format |
 | config.opendesk.clients | list | `[]` | Create clients based on a YAML version of Keycloak's JSON config format |
 | config.precreateGroups | list | `["Domain Admins","Domain Users"]` | Groups that will be pre-created in Keycloak to avoid race conditions when first users login to an openDesk deployment in parallel and Keycloak tries to create the groups in parallel as well resulting in a `org.keycloak.models.ModelDuplicateException: Duplicate resource error` |
-| config.realmSettings | object | `{"accessTokenLifespan":300,"rememberMe":true,"ssoSessionIdleTimeout":14400,"ssoSessionIdleTimeoutRememberMe":28800,"ssoSessionMaxLifespan":57600,"ssoSessionMaxLifespanRememberMe":1209600}` | Configure the realm details |
-| config.realmSettings.accessTokenLifespan | int | `300` | Please lookup "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
+| config.realmSettings | object | `{"accessCodeLifespan":60,"accessCodeLifespanLogin":1800,"accessCodeLifespanUserAction":300,"accessTokenLifespan":300,"accessTokenLifespanForImplicitFlow":900,"actionTokenGeneratedByAdminLifespan":43200,"actionTokenGeneratedByUserLifespan":300,"clientOfflineSessionIdleTimeout":0,"clientOfflineSessionMaxLifespan":0,"clientSessionIdleTimeout":0,"clientSessionMaxLifespan":0,"oauth2DeviceCodeLifespan":600,"oauth2DevicePollingInterval":5,"offlineSessionIdleTimeout":2592000,"offlineSessionMaxLifespan":5184000,"offlineSessionMaxLifespanEnabled":false,"refreshTokenMaxReuse":0,"rememberMe":true,"revokeRefreshToken":false,"ssoSessionIdleTimeout":14400,"ssoSessionIdleTimeoutRememberMe":28800,"ssoSessionMaxLifespan":57600,"ssoSessionMaxLifespanRememberMe":1209600}` | Configure the realm details |
+| config.realmSettings.accessCodeLifespan | int | `60` | Setting the realm wide value using Keycloak's REST API |
+| config.realmSettings.accessCodeLifespanLogin | int | `1800` | Setting the realm wide value using Keycloak's REST API |
+| config.realmSettings.accessCodeLifespanUserAction | int | `300` | Setting the realm wide value using Keycloak's REST API |
+| config.realmSettings.accessTokenLifespan | int | `300` | Ref.: "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.accessTokenLifespanForImplicitFlow | int | `900` | Ref.: "Access Token Lifespan For Implicit Flow" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.actionTokenGeneratedByAdminLifespan | int | `43200` | Setting the realm wide value using Keycloak's REST API |
+| config.realmSettings.actionTokenGeneratedByUserLifespan | int | `300` | Setting the realm wide value using Keycloak's REST API |
+| config.realmSettings.clientOfflineSessionIdleTimeout | int | `0` | Ref.: "Client Offline Session Idle" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.clientOfflineSessionMaxLifespan | int | `0` | Ref.: "Client Offline Session Max" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.clientSessionIdleTimeout | int | `0` | Ref.: "Client Session Idle" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.clientSessionMaxLifespan | int | `0` | Ref.: "Client Session Max" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.oauth2DeviceCodeLifespan | int | `600` | Setting the realm wide value using Keycloak's REST API |
+| config.realmSettings.oauth2DevicePollingInterval | int | `5` | Setting the realm wide value using Keycloak's REST API |
+| config.realmSettings.offlineSessionIdleTimeout | int | `2592000` | Ref.: "Offline Session Idle" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.offlineSessionMaxLifespan | int | `5184000` | Ref.: "Offline Session Max" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.offlineSessionMaxLifespanEnabled | bool | `false` | Ref.: "Offline Session Max Limited" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.refreshTokenMaxReuse | int | `0` | Setting the realm wide value using Keycloak's REST API |
 | config.realmSettings.rememberMe | bool | `true` | Enable "Remember Me" option making the user's Keycloak session persistant based on the RememberMe related parameters below |
-| config.realmSettings.ssoSessionIdleTimeout | int | `14400` | Please lookup "SSO Session Idle" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
-| config.realmSettings.ssoSessionIdleTimeoutRememberMe | int | `28800` | Please lookup "SSO Session Idle Remember Me" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
-| config.realmSettings.ssoSessionMaxLifespan | int | `57600` | Please lookup "SSO Session Max" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
-| config.realmSettings.ssoSessionMaxLifespanRememberMe | int | `1209600` | Please lookup "SSO Session Max Remember Me" in https://www.keycloak.org/docs/latest/server_admin/ for the latest upstream documentation. |
+| config.realmSettings.revokeRefreshToken | bool | `false` | Ref.: "Revoke Refresh Token" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.ssoSessionIdleTimeout | int | `14400` | Ref.: "SSO Session Idle" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.ssoSessionIdleTimeoutRememberMe | int | `28800` | Ref.: "SSO Session Idle Remember Me" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.ssoSessionMaxLifespan | int | `57600` | Ref.: "SSO Session Max" in https://www.keycloak.org/docs/latest/server_admin/ |
+| config.realmSettings.ssoSessionMaxLifespanRememberMe | int | `1209600` | Ref.: "SSO Session Max Remember Me" in https://www.keycloak.org/docs/latest/server_admin/ |
 | config.twoFactorSettings | object | `{"additionalGroups":[],"roleName":"2FA role"}` | Extended 2FA configuration |
 | config.twoFactorSettings.additionalGroups | list | `[]` | Enable 2FA for given LDAP group(s), just use group Names like `Domain Admin` etc. this requires the name of Keycloak's 2FA roles to be provided as well, see `roleName`. Note: This does not remove 2FA for groups. |
 | config.twoFactorSettings.roleName | string | `"2FA role"` | You must provide Keycloak's 2FA role name when enabling 2FA for groups using the `2faGroups` Array. |

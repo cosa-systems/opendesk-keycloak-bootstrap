@@ -1,3 +1,10 @@
+# [2.5.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.4.0...v2.5.0) (2025-04-04)
+
+
+### Features
+
+* Support more global realm settings to be templated ([ca0c5c3](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/ca0c5c3c31a616ffebdec1d3391b90c63bd31a3c))
+
 # [2.4.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.3.0...v2.4.0) (2025-03-11)
 
 
