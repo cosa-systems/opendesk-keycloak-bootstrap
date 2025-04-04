@@ -1,0 +1,49 @@
+# SPDX-FileCopyrightText: 2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: "Merge explicit values into IdP config"
+  when: "global_cfgobj.config.ssoFederation.enabled"
+  set_fact:
+    upstream_idp_config: >-
+      {{
+        global_cfgobj.config.ssoFederation.idpDetails
+        | combine({ 'displayName': global_cfgobj.config.ssoFederation.name }, recursive=True)
+        | combine({ 'alias': 'sso-federation-idp' }, recursive=True)
+        | combine({ 'firstBrokerLoginFlowAlias': 'sso-federation-flow' }, recursive=True)
+      }}
+
+- name: "Create 'sso-federation-idp' object"
+  when: "global_cfgobj.config.ssoFederation.enabled"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/identity-provider/instances"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "POST"
+    body_format: "json"
+    body: "{{ upstream_idp_config }}"
+    status_code: [201,409]
+  register: "create_idp_response"
+
+- name: "Update IdP in case it already exists"
+  when: "global_cfgobj.config.ssoFederation.enabled and create_idp_response.status == 409"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/identity-provider/instances/sso-federation-idp"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "PUT"
+    body_format: "json"
+    body: "{{ upstream_idp_config }}"
+    status_code: [204]
+
+- name: "Delete IdP (but do not fail if it fails, as it might not even exist)"
+  when: "not global_cfgobj.config.ssoFederation.enabled"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/identity-provider/instances/sso-federation-idp"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "DELETE"
+    status_code: [204,404]
+...

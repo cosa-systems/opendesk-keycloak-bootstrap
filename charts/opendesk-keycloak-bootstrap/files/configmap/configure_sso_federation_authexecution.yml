@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: 2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: "Add execution step 'detect-existing-broker-user' to 'sso-federation-flow'"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/authentication/flows/sso-federation-flow/executions/execution"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "POST"
+    body_format: "json"
+    body:
+      provider: "idp-detect-existing-broker-user"
+    status_code: [201]
+
+- name: "Add execution step 'set-existing-user-authenticated' to 'sso-federation-flow'"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/authentication/flows/sso-federation-flow/executions/execution"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "POST"
+    body_format: "json"
+    body:
+      provider: "idp-auto-link"
+    status_code: [201]
+
+- name: "Get details the previously added execution steps"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/authentication/flows/sso-federation-flow/executions"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "executions_list"
+
+- name: "Verify there are just two executions (otherwise somebody manually tampered with it or the bootstrapping is buggy)."
+  assert:
+    that:
+      - "executions_list.json | length == 2"
+    fail_msg: "Found more than two executions in 'sso-federation-flow'."
+
+- name: "Setting execution steps to 'REQUIRED'"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/authentication/flows/sso-federation-flow/executions"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "PUT"
+    body_format: "json"
+    body:
+      id: "{{ item.id }}"
+      requirement: "REQUIRED"
+      description: "openDesk authentication flow for SSO federation"
+    status_code: [204]
+  loop: "{{ executions_list.json }}"
+...

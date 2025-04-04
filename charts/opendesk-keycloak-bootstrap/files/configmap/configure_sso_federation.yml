@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: 2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-License-Identifier: Apache-2.0
+---
+# We always create the flow, even if SSO federation is not active, as we do not reference it
+# anywhere else, it does not hurt.
+- name: "Create 'sso-federation-flow' object"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/authentication/flows"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "POST"
+    body_format: "json"
+    body:
+      alias: "sso-federation-flow"
+      description: "openDesk authentication flow for SSO federation"
+      providerId: "basic-flow"
+      topLevel: true
+      builtIn: false
+    status_code: [201,409]
+  register: "create_flow_response"
+
+- name: "Configuring 'sso-federation-flow': Setting exeuction steps to 'REQUIRED'"
+  when: "create_flow_response.status == 201"
+  ansible.builtin.include_tasks: "configure_sso_federation_authexecution.yml"
+
+- name: "Creating upstream IdP object"
+  ansible.builtin.include_tasks: "configure_sso_federation_upstreamidp.yml"
+
+- name: "Handle upstream SSO enforcement option"
+  ansible.builtin.include_tasks: "configure_sso_federation_handleenforcement.yml"
+
+...
+

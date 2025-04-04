@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2024-2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 # SPDX-License-Identifier: Apache-2.0
 ---
@@ -14,6 +15,11 @@
     # we do some loops in order to wait for the service in
     # `set_global_accesstoken.yml`
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+
+    - ansible.builtin.include_tasks: "./configure_sso_federation.yml"
+
+    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+
     - ansible.builtin.include_tasks: "./configure_realmsettings.yml"
 
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
@@ -23,9 +29,11 @@
     - ansible.builtin.include_tasks: "./configure_clientpermissions.yml"
 
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+
     - ansible.builtin.include_tasks: "./configure_create_groups.yml"
 
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+
     - ansible.builtin.include_tasks: "./configure_set_2fa_groups.yml"
 
     # In the following case we request the access token on every loop, not upfront.

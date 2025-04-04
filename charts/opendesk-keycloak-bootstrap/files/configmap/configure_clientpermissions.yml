@@ -121,12 +121,14 @@
     status_code: [200]
   register: "permissionscopequeryresult"
 
+- ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
 - name: "Will loop over"
   ansible.builtin.debug:
     # cannot use json_query's start with due to https://github.com/ansible/ansible/issues/27299
     msg: "{{ permissionscopequeryresult['json'] | selectattr('name', 'contains', 'token-exchange.permission.client.')
       | list | json_query('[*].name') }}"
 
+- ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
 - name: "Looping now"
   ansible.builtin.include_tasks: "configure_clientpermissions_configure_loop.yml"
   loop: "{{ permissionscopequeryresult['json'] | selectattr('name', 'contains', 'token-exchange.permission.client.')

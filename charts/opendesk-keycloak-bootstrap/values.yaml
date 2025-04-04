@@ -137,7 +137,7 @@ config:
   # well resulting in a `org.keycloak.models.ModelDuplicateException: Duplicate resource error`
   precreateGroups: [ 'Domain Admins', 'Domain Users' ]
 
-  # -- Configure the realm details
+  # Configure base parameters of the openDesk realm
   realmSettings:
     # -- Ref.: "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/
     accessTokenLifespan: 300
@@ -187,7 +187,18 @@ config:
     # -- Setting the realm wide value using Keycloak's REST API
     refreshTokenMaxReuse: 0
 
-  # -- Extended 2FA configuration
+  # Optional SSO Federation
+  ssoFederation:
+    # -- Enable SSO federation
+    enabled: false
+    # -- Enforce login using the SSO federation disables the local Keycloak login (for the realm)
+    enforceFederatedLogin: false
+    # -- Name of the SSO federation, is shown in the local login dialog as login option
+    name: "My upstream IdP"
+    # -- Details of the IdP Configuration
+    idpDetails: ~
+
+  # Extended 2FA configuration
   twoFactorSettings:
     # -- Enable 2FA for given LDAP group(s), just use group Names like `Domain Admin` etc.
     # this requires the name of Keycloak's 2FA roles to be provided as well, see `roleName`.
