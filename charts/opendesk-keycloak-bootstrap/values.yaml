@@ -103,7 +103,7 @@ config:
         # -- The Keycloak master realm admin user's password as input for the secret
         password: ""
       # Admin user credentials from existing secret (higher precedence over plain values)
-      secret: 
+      secret:
         # -- Secret name containing admin credentials.
         # -- Format has to be:
         # -- admin.yaml: |
@@ -139,24 +139,53 @@ config:
 
   # -- Configure the realm details
   realmSettings:
-    # -- Please lookup "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/
-    # for the latest upstream documentation.
+    # -- Ref.: "Access Token Lifespan" in https://www.keycloak.org/docs/latest/server_admin/
     accessTokenLifespan: 300
-    # -- Please lookup "SSO Session Idle" in https://www.keycloak.org/docs/latest/server_admin/
-    # for the latest upstream documentation.
+    # -- Ref.: "Access Token Lifespan For Implicit Flow" in https://www.keycloak.org/docs/latest/server_admin/
+    accessTokenLifespanForImplicitFlow: 900
+    # -- Ref.: "SSO Session Idle" in https://www.keycloak.org/docs/latest/server_admin/
     ssoSessionIdleTimeout: 14400
-    # -- Please lookup "SSO Session Max" in https://www.keycloak.org/docs/latest/server_admin/
-    # for the latest upstream documentation.
+    # -- Ref.: "SSO Session Max" in https://www.keycloak.org/docs/latest/server_admin/
     ssoSessionMaxLifespan: 57600
     # -- Enable "Remember Me" option making the user's Keycloak session persistant based on the RememberMe
     # related parameters below
     rememberMe: true
-    # -- Please lookup "SSO Session Idle Remember Me" in https://www.keycloak.org/docs/latest/server_admin/
-    # for the latest upstream documentation.
+    # -- Ref.: "SSO Session Idle Remember Me" in https://www.keycloak.org/docs/latest/server_admin/
     ssoSessionIdleTimeoutRememberMe: 28800
-    # -- Please lookup "SSO Session Max Remember Me" in https://www.keycloak.org/docs/latest/server_admin/
-    # for the latest upstream documentation.
+    # -- Ref.: "SSO Session Max Remember Me" in https://www.keycloak.org/docs/latest/server_admin/
     ssoSessionMaxLifespanRememberMe: 1209600
+    # -- Ref.: "Revoke Refresh Token" in https://www.keycloak.org/docs/latest/server_admin/
+    revokeRefreshToken: false
+    # -- Ref.: "Offline Session Idle" in https://www.keycloak.org/docs/latest/server_admin/
+    offlineSessionIdleTimeout: 2592000
+    # -- Ref.: "Offline Session Max Limited" in https://www.keycloak.org/docs/latest/server_admin/
+    offlineSessionMaxLifespanEnabled: false
+    # -- Ref.: "Offline Session Max" in https://www.keycloak.org/docs/latest/server_admin/
+    offlineSessionMaxLifespan: 5184000
+    # -- Ref.: "Client Session Idle" in https://www.keycloak.org/docs/latest/server_admin/
+    clientSessionIdleTimeout: 0
+    # -- Ref.: "Client Session Max" in https://www.keycloak.org/docs/latest/server_admin/
+    clientSessionMaxLifespan: 0
+    # -- Ref.: "Client Offline Session Idle" in https://www.keycloak.org/docs/latest/server_admin/
+    clientOfflineSessionIdleTimeout: 0
+    # -- Ref.: "Client Offline Session Max" in https://www.keycloak.org/docs/latest/server_admin/
+    clientOfflineSessionMaxLifespan: 0
+    # -- Setting the realm wide value using Keycloak's REST API
+    accessCodeLifespan: 60
+    # -- Setting the realm wide value using Keycloak's REST API
+    accessCodeLifespanUserAction: 300
+    # -- Setting the realm wide value using Keycloak's REST API
+    accessCodeLifespanLogin: 1800
+    # -- Setting the realm wide value using Keycloak's REST API
+    actionTokenGeneratedByAdminLifespan: 43200
+    # -- Setting the realm wide value using Keycloak's REST API
+    actionTokenGeneratedByUserLifespan: 300
+    # -- Setting the realm wide value using Keycloak's REST API
+    oauth2DeviceCodeLifespan: 600
+    # -- Setting the realm wide value using Keycloak's REST API
+    oauth2DevicePollingInterval: 5
+    # -- Setting the realm wide value using Keycloak's REST API
+    refreshTokenMaxReuse: 0
 
   # -- Extended 2FA configuration
   twoFactorSettings:

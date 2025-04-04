@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 # SPDX-License-Identifier: Apache-2.0
 ---
-- name: "Configure rememberMe options"
+- name: "Configure session timeouts and lifespans"
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}"
     headers:
@@ -14,6 +14,36 @@
         "accessTokenLifespan": {{ global_cfgobj.config.realmSettings.accessTokenLifespan }},
         "ssoSessionIdleTimeout": {{ global_cfgobj.config.realmSettings.ssoSessionIdleTimeout }},
         "ssoSessionMaxLifespan": {{ global_cfgobj.config.realmSettings.ssoSessionMaxLifespan }},
+        "accessTokenLifespanForImplicitFlow": {{ global_cfgobj.config.realmSettings.accessTokenLifespanForImplicitFlow }},
+        "offlineSessionIdleTimeout": {{ global_cfgobj.config.realmSettings.offlineSessionIdleTimeout }},
+        "offlineSessionMaxLifespanEnabled": {{ global_cfgobj.config.realmSettings.offlineSessionMaxLifespanEnabled }},
+        "offlineSessionMaxLifespan": {{ global_cfgobj.config.realmSettings.offlineSessionMaxLifespan }},
+        "clientSessionIdleTimeout": {{ global_cfgobj.config.realmSettings.clientSessionIdleTimeout }},
+        "clientSessionMaxLifespan": {{ global_cfgobj.config.realmSettings.clientSessionMaxLifespan }},
+        "clientOfflineSessionIdleTimeout": {{ global_cfgobj.config.realmSettings.clientOfflineSessionIdleTimeout }},
+        "clientOfflineSessionMaxLifespan": {{ global_cfgobj.config.realmSettings.clientOfflineSessionMaxLifespan }},
+        "accessCodeLifespan": {{ global_cfgobj.config.realmSettings.accessCodeLifespan }},
+        "accessCodeLifespanUserAction": {{ global_cfgobj.config.realmSettings.accessCodeLifespanUserAction }},
+        "accessCodeLifespanLogin": {{ global_cfgobj.config.realmSettings.accessCodeLifespanLogin }},
+        "actionTokenGeneratedByAdminLifespan": {{ global_cfgobj.config.realmSettings.actionTokenGeneratedByAdminLifespan }},
+        "actionTokenGeneratedByUserLifespan": {{ global_cfgobj.config.realmSettings.actionTokenGeneratedByUserLifespan }},
+        "oauth2DeviceCodeLifespan": {{ global_cfgobj.config.realmSettings.oauth2DeviceCodeLifespan }},
+        "oauth2DevicePollingInterval": {{ global_cfgobj.config.realmSettings.oauth2DevicePollingInterval }},
+        "revokeRefreshToken": {{ global_cfgobj.config.realmSettings.revokeRefreshToken }},
+        "refreshTokenMaxReuse": {{ global_cfgobj.config.realmSettings.refreshTokenMaxReuse }}
+      }
+    status_code: [204]
+
+- name: "Configure rememberMe options"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "PUT"
+    body_format: "json"
+    body: |
+      {
         "rememberMe": {{ global_cfgobj.config.realmSettings.rememberMe }},
         "ssoSessionIdleTimeoutRememberMe":
           {{ global_cfgobj.config.realmSettings.ssoSessionIdleTimeoutRememberMe }},
