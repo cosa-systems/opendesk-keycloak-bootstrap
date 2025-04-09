@@ -11,32 +11,30 @@
         var: "global_cfgobj"
       when: "global_cfgobj.config.debug.enabled|bool"
 
+    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+    - ansible.builtin.include_tasks: "./configure_realmsettings.yml"
+
+    # In the following case we request the access token on every loop, not upfront,
+    # so no need to request it here in the `main.yml`
+    - ansible.builtin.include_tasks: "./configure_client_access_restriction.yml"
+
     # To get the access token the Keycloak must be up and running,
     # we do some loops in order to wait for the service in
     # `set_global_accesstoken.yml`
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
-
     - ansible.builtin.include_tasks: "./configure_sso_federation.yml"
 
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+    - ansible.builtin.include_tasks: "./configure_set_2fa_groups.yml"
 
-    - ansible.builtin.include_tasks: "./configure_realmsettings.yml"
+
+    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+    - ansible.builtin.include_tasks: "./configure_create_groups.yml"
 
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     # To configure the client permissions we require the Intercom Service
     # deployment to be completed as it creates the related OIDC client
     # that is required for the client permission setup.
     - ansible.builtin.include_tasks: "./configure_clientpermissions.yml"
-
-    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
-
-    - ansible.builtin.include_tasks: "./configure_create_groups.yml"
-
-    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
-
-    - ansible.builtin.include_tasks: "./configure_set_2fa_groups.yml"
-
-    # In the following case we request the access token on every loop, not upfront.
-    - ansible.builtin.include_tasks: "./configure_client_access_restriction.yml"
 
 ...
