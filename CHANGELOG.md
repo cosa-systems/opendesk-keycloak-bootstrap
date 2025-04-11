@@ -1,3 +1,17 @@
+# [2.6.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.5.0...v2.6.0) (2025-04-11)
+
+
+### Bug Fixes
+
+* **2fa-groups:** Handle multiple groups as Array not String ([2b6a1e5](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/2b6a1e519003c4e9405cbbc800f91c181c3c4d01))
+* **facts:** Align default handling ([cebcb60](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/cebcb602b77d6e26728e8471c4753a6acc3ce192))
+
+
+### Features
+
+* Cleanup main.yml ([b0042ba](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/b0042ba3251f0fa2a0d0912e9b9e6af1fe9626b6))
+* SSO Federation ([58e9874](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/58e98743ed523b30bcf78833f9fae62a1ea8e703))
+
 # [2.5.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.4.0...v2.5.0) (2025-04-04)
 
 
