@@ -74,9 +74,17 @@ config:
   # are supported by the script.
   custom:
     # -- Create client scopes based on a YAML version of Keycloak's JSON config format
-    clientScopes: []
+    clientScopes: {}
     # -- Create clients based on a YAML version of Keycloak's JSON config format
-    clients: []
+    clients:
+      # -- Plain value of the Client Objects (fallback if no secret exists inside of Kubernetes).
+      value: {}
+      # -- Client Objects confidential data from existing secret (higher precedence than plain value)
+      existingSecret:
+        # -- Name of the Kubernetes secret that contains confidential data for the Client Objects
+        name: ""
+        # -- Key inside the Kubernetes secret that contains the confidential data for the Client Objects
+        key: ""
 
   # Debugging related settings
   debug:
@@ -128,9 +136,17 @@ config:
   # are supported by the script.
   opendesk:
     # -- Create client scopes based on a YAML version of Keycloak's JSON config format
-    clientScopes: []
+    clientScopes: {}
     # -- Create clients based on a YAML version of Keycloak's JSON config format
-    clients: []
+    clients:
+      # -- Plain value of the Client Objects (fallback if no secret exists inside of Kubernetes).
+      value: {}
+      # -- Client Objects confidential data from existing secret (higher precedence than plain value)
+      existingSecret:
+        # -- Name of the Kubernetes secret that contains confidential data for the Client Objects
+        name: ""
+        # -- Key inside the Kubernetes secret that contains the confidential data for the Client Objects
+        key: ""
 
   # -- Groups that will be pre-created in Keycloak to avoid race conditions when first users login
   # to an openDesk deployment in parallel and Keycloak tries to create the groups in parallel as
@@ -196,7 +212,15 @@ config:
     # -- Name of the SSO federation, is shown in the local login dialog as login option
     name: "My upstream IdP"
     # -- Details of the IdP Configuration
-    idpDetails: ~
+    idpDetails:
+      # -- Plain value of the IdP Configuration (fallback if no secret exists inside of Kubernetes).
+      value: {}
+      # -- IdP Configuration confidential data from existing secret (higher precedence than plain value)
+      existingSecret:
+        # -- Name of the Kubernetes secret that contains confidential data for the IdP Configuration
+        name: ""
+        # -- Key inside the Kubernetes secret that contains the confidential data for the IdP Configuration
+        key: ""
 
   # Extended 2FA configuration
   twoFactorSettings:

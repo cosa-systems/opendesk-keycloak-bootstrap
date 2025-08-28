@@ -82,6 +82,21 @@ spec:
               name: "ansible-directory-volume"
             - mountPath: "/tmp"
               name: "temp-dir"
+            {{- if and .Values.config.custom.clients.existingSecret.key }}
+            - mountPath: "/app/secrets/custom.yaml"
+              name: "custom-clients-secret"
+              subPath: {{ .Values.config.custom.clients.existingSecret.key | quote }}
+            {{- end }}
+            {{- if .Values.config.opendesk.clients.existingSecret.key }}
+            - mountPath: "/app/secrets/opendesk.yaml"
+              name: "opendesk-clients-secret"
+              subPath: {{ .Values.config.opendesk.clients.existingSecret.key | quote }}
+            {{- end }}
+            {{- if .Values.config.ssoFederation.idpDetails.existingSecret.key }}
+            - mountPath: "/app/secrets/ssoFederation.yaml"
+              name: "ssofederation-idpdetails-secret"
+              subPath: {{ .Values.config.ssoFederation.idpDetails.existingSecret.key | quote }}
+            {{- end }}
             {{- if .Values.extraVolumeMounts }}
             {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" .) | nindent 12 }}
             {{- end }}
@@ -110,6 +125,21 @@ spec:
         - name: "ansible-directory-volume"
           configMap:
             name: "{{ include "common.names.fullname" . }}-ansible"
+        {{- if .Values.config.custom.clients.existingSecret.name }}
+        - name: "custom-clients-secret"
+          secret:
+            secretName: {{ .Values.config.custom.clients.existingSecret.name | quote }}
+        {{- end }}
+        {{- if .Values.config.opendesk.clients.existingSecret.name }}
+        - name: "opendesk-clients-secret"
+          secret:
+            secretName: {{ .Values.config.opendesk.clients.existingSecret.name | quote }}
+        {{- end }}
+        {{- if .Values.config.ssoFederation.idpDetails.existingSecret.name }}
+        - name: "ssofederation-idpdetails-secret"
+          secret:
+            secretName: {{ .Values.config.opendesk.clients.existingSecret.name | quote }}
+        {{- end }}
         {{- if .Values.extraVolumes }}
         {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes  "context" .) | nindent 8 }}
         {{- end }}

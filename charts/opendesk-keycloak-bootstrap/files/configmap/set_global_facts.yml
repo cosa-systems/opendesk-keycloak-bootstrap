@@ -4,7 +4,7 @@
 ---
 - name: "Global: Read and parse config.yaml"
   ansible.builtin.set_fact:
-    global_cfgobj: "{{ lookup('file', '/app/values.yaml') | from_yaml }}"
+    global_cfgobj: "{{ lookup('file', '/tmp/values.yaml') | from_yaml }}"
     global_admin: "{{ lookup ('file', '/app/admin.yaml') | from_yaml }}"
 
 - name: "Global: Set variables"
