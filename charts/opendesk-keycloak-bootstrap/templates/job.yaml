@@ -82,7 +82,7 @@ spec:
               name: "ansible-directory-volume"
             - mountPath: "/tmp"
               name: "temp-dir"
-            {{- if and .Values.config.custom.clients.existingSecret.key }}
+            {{- if .Values.config.custom.clients.existingSecret.key }}
             - mountPath: "/app/secrets/custom.yaml"
               name: "custom-clients-secret"
               subPath: {{ .Values.config.custom.clients.existingSecret.key | quote }}
@@ -92,10 +92,10 @@ spec:
               name: "opendesk-clients-secret"
               subPath: {{ .Values.config.opendesk.clients.existingSecret.key | quote }}
             {{- end }}
-            {{- if .Values.config.ssoFederation.idpDetails.existingSecret.key }}
+            {{- if .Values.config.ssoFederation.existingSecret.key }}
             - mountPath: "/app/secrets/ssoFederation.yaml"
               name: "ssofederation-idpdetails-secret"
-              subPath: {{ .Values.config.ssoFederation.idpDetails.existingSecret.key | quote }}
+              subPath: {{ .Values.config.ssoFederation.existingSecret.key | quote }}
             {{- end }}
             {{- if .Values.extraVolumeMounts }}
             {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" .) | nindent 12 }}
@@ -135,10 +135,10 @@ spec:
           secret:
             secretName: {{ .Values.config.opendesk.clients.existingSecret.name | quote }}
         {{- end }}
-        {{- if .Values.config.ssoFederation.idpDetails.existingSecret.name }}
+        {{- if .Values.config.ssoFederation.existingSecret.name }}
         - name: "ssofederation-idpdetails-secret"
           secret:
-            secretName: {{ .Values.config.opendesk.clients.existingSecret.name | quote }}
+            secretName: {{ .Values.config.ssoFederation.existingSecret.name | quote }}
         {{- end }}
         {{- if .Values.extraVolumes }}
         {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes  "context" .) | nindent 8 }}

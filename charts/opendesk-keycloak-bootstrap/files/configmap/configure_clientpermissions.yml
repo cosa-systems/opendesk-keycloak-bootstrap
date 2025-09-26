@@ -23,7 +23,8 @@
 
 - name: "Extract client IDs and add to list"
   ansible.builtin.set_fact:
-    client_ids: "{{ global_cfgobj.config.opendesk.clients.value | map(attribute='clientId') | list }}"
+    client_ids: "{{ client_ids | default([]) + [item.value.clientId] }}"
+  loop: "{{ global_cfgobj.config.opendesk.clients.value | dict2items }}"
 
 - name: "Looping now"
   ansible.builtin.include_tasks: "configure_clientpermissions_enable_loop.yml"

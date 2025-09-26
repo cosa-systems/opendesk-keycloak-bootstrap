@@ -22,7 +22,9 @@
          | first }}
 
 - name: "Enforcing SSO federated login"
-  when: "global_cfgobj.config.ssoFederation.enabled and global_cfgobj.config.ssoFederation.enforceFederatedLogin"
+  when: >-
+    global_cfgobj.config.ssoFederation.enabled
+    and global_cfgobj.config.ssoFederation.enforceFederatedLogin == ssoFederationItem.key
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/authentication/executions/{{ redirector_execution_id }}/config"
     headers:
@@ -31,39 +33,9 @@
     method: "POST"
     body_format: "json"
     body:
-      alias: sso-federation-idp
+      alias: "sso-federation-idp-{{ ssoFederationItem.key }}"
       config:
-        defaultProvider: sso-federation-idp
+        defaultProvider: "sso-federation-idp-{{ ssoFederationItem.key }}"
     status_code: [201]
 
-- name: "Get the ID of a possible configuration of of the element where 'providerId' is 'identity-provider-redirector'"
-  when: >-
-    executions_list.json
-    | selectattr('providerId', 'defined')
-    | selectattr('providerId', 'equalto', 'identity-provider-redirector')
-    | selectattr('authenticationConfig', 'defined')
-    | list | length > 0
-  set_fact:
-    redirector_execution_authentication_config_id: >-
-      {{ executions_list.json
-         | selectattr('providerId', 'defined')
-         | selectattr('providerId', 'equalto', 'identity-provider-redirector')
-         | map(attribute='authenticationConfig')
-         | list
-         | first }}
-
-- name: "Delete the authentication config that enforces the SSO federated login"
-  when: >-
-    (
-      not global_cfgobj.config.ssoFederation.enforceFederatedLogin
-      or not global_cfgobj.config.ssoFederation.enabled
-    )
-    and redirector_execution_authentication_config_id is defined
-  ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/authentication/config/{{ redirector_execution_authentication_config_id }}"
-    headers:
-      Accept: "application/json"
-      Authorization: "Bearer {{ global_accesstoken }}"
-    method: "DELETE"
-    status_code: [204]
 ...

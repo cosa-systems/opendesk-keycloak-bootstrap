@@ -24,11 +24,46 @@
   when: "create_flow_response.status == 201"
   ansible.builtin.include_tasks: "configure_sso_federation_authexecution.yml"
 
-- name: "Creating upstream IdP object"
-  ansible.builtin.include_tasks: "configure_sso_federation_upstreamidp.yml"
+- name: "Creating upstream IdP object and handle upstream sso enforcement option"
+  when: "global_cfgobj.config.ssoFederation.value is defined"
+  ansible.builtin.include_tasks: "configure_sso_federation_upstreamidp_handleenforcement.yml"
+  loop: "{{ global_cfgobj.config.ssoFederation.value | dict2items }}"
+  loop_control:
+    loop_var: "ssoFederationItem"
 
-- name: "Handle upstream SSO enforcement option"
-  ansible.builtin.include_tasks: "configure_sso_federation_handleenforcement.yml"
+- name: "Generate list of available IdPs"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/identity-provider/instances"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    body_format: "json"
+    body:
+      search: "sso-federation-idp"
+    status_code: [200]
+  register: "availableSsoFederationIdpsObject"
+
+- name: "Get a list of aliases of available IdPs"
+  when: "availableSsoFederationIdpsObject is defined"
+  ansible.builtin.set_fact:
+    availableSsoFederationIdps: >-
+      {{ availableSsoFederationIdpsObject.json
+         | selectattr('alias', 'defined')
+         | map(attribute='alias')
+         | list
+      }}
+
+- name: "Cleanup unconfigured IdPs"
+  when: >-
+    availableSsoFederationIdps is defined
+    and not (ssoFederationIdp in configuredSsoFederationIdps | default([]))
+  ansible.builtin.include_tasks: "configure_sso_federation_upstreamidp_cleanup.yml"
+  loop: "{{ availableSsoFederationIdps }}"
+  loop_control:
+    loop_var: "ssoFederationIdp"
+
+- name: "Cleanup enforced SSO federated login"
+  ansible.builtin.include_tasks: "configure_sso_federation_handleenforcement_cleanup.yml"
 
 ...
-

@@ -207,20 +207,15 @@ config:
   ssoFederation:
     # -- Enable SSO federation
     enabled: false
-    # -- Enforce login using the SSO federation disables the local Keycloak login (for the realm)
-    enforceFederatedLogin: false
-    # -- Name of the SSO federation, is shown in the local login dialog as login option
-    name: "My upstream IdP"
-    # -- Details of the IdP Configuration
-    idpDetails:
-      # -- Plain value of the IdP Configuration (fallback if no secret exists inside of Kubernetes).
-      value: {}
+    # -- Enforce login for the IdP configured with this very key in 'value' using the SSO federation disables the local Keycloak login (for the realm)
+    enforceFederatedLogin: ""
+    value: {}
       # -- IdP Configuration confidential data from existing secret (higher precedence than plain value)
-      existingSecret:
-        # -- Name of the Kubernetes secret that contains confidential data for the IdP Configuration
-        name: ""
-        # -- Key inside the Kubernetes secret that contains the confidential data for the IdP Configuration
-        key: ""
+    existingSecret:
+      # -- Name of the Kubernetes secret that contains confidential data for the IdP Configuration
+      name: ""
+      # -- Key inside the Kubernetes secret that contains the confidential data for the IdP Configuration
+      key: ""
 
   # Extended 2FA configuration
   twoFactorSettings:
