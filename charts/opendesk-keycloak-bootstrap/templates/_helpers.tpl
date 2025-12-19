@@ -1,4 +1,5 @@
 {{/*
+SPDX-FileCopyrightText: 2024-2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
 SPDX-License-Identifier: Apache-2.0
 */}}
@@ -63,4 +64,49 @@ Create the name of the service account to use
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
+{{- end }}
+
+{{/*
+Find possible existing secret name/key-pair and determine volume or volumeMount
+*/}}
+{{- define "preparePossibleExistingSecret" -}}
+{{- $where := index . "where" -}}
+{{- $what := printf "determine.%s" (index . "what") -}}
+{{- range $where }}
+{{- range $key, $value := . }}
+{{- if and $value (kindIs "map" $value) }}
+{{- if hasKey $value "existingSecret" }}
+{{- include $what . }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+
+{{/*
+Determine volumeMount - build the 'volumeMount' section according to the name/key-pair
+*/}}
+{{- define "determine.mount" -}}
+{{- $sanitisedName := include "sanitisedName" (list .existingSecret.name .existingSecret.key) }}
+- mountPath: {{ printf "/app/secrets/%s.yaml" $sanitisedName | quote }}
+  name: {{ $sanitisedName | quote }}
+  subPath: {{ .existingSecret.key | quote }}
+{{- end }}
+
+{{/*
+Determine volume - build the 'volume' section according to the name/key-pair
+*/}}
+{{- define "determine.volume" -}}
+{{- $sanitisedName := include "sanitisedName" (list .existingSecret.name .existingSecret.key) }}
+- name: {{ $sanitisedName | quote }}
+  secret:
+    secretName: {{ .existingSecret.name | quote }}
+{{- end }}
+
+{{/*
+Sanitised name - return a valid and sanitised name for the volume
+*/}}
+{{- define "sanitisedName" -}}
+{{- regexReplaceAll "\\W+" (printf "%s %s" (index . 0) (index . 1)) "-" }}
 {{- end }}
