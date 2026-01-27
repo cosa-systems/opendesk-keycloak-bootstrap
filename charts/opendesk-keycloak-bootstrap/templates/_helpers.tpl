@@ -83,7 +83,6 @@ Find possible existing secret name/key-pair and determine volume or volumeMount
 {{- end }}
 {{- end }}
 
-
 {{/*
 Determine volumeMount - build the 'volumeMount' section according to the name/key-pair
 */}}

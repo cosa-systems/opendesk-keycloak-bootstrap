@@ -84,7 +84,7 @@ spec:
               name: "temp-dir"
             {{- include "preparePossibleExistingSecret" (dict "where" .Values.config.custom.clients "what" "mount") | indent 12 }}
             {{- include "preparePossibleExistingSecret" (dict "where" .Values.config.opendesk.clients "what" "mount") | indent 12 }}
-            {{- range .Values.config.ssoFederation.clients }}
+            {{- range .Values.config.ssoFederation.idps }}
             {{- include "preparePossibleExistingSecret" (dict "where" .idpDetails.config "what" "mount") | indent 12 }}
             {{- end }}
             {{- if .Values.extraVolumeMounts }}
@@ -117,7 +117,7 @@ spec:
             name: "{{ include "common.names.fullname" . }}-ansible"
         {{- include "preparePossibleExistingSecret" (dict "where" .Values.config.custom.clients "what" "volume") | indent 8 }}
         {{- include "preparePossibleExistingSecret" (dict "where" .Values.config.opendesk.clients "what" "volume") | indent 8 }}
-        {{- range .Values.config.ssoFederation.clients }}
+        {{- range .Values.config.ssoFederation.idps }}
         {{- include "preparePossibleExistingSecret" (dict "where" .idpDetails.config "what" "volume") | indent 8 }}
         {{- end }}
         {{- if .Values.extraVolumes }}
