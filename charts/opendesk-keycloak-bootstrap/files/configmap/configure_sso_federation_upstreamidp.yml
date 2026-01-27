@@ -22,7 +22,7 @@
     method: "POST"
     body_format: "json"
     body: "{{ upstream_idp_config }}"
-    status_code: [201,409]
+    status_code: [201, 409]
   register: "create_idp_response"
 
 - name: "Update IdP in case it already exists"

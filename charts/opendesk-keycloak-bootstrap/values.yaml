@@ -203,7 +203,7 @@ config:
   ssoFederation:
     # -- Enable SSO federation
     enabled: false
-    # -- Enforce login for the IdP configured with this very key in 'value' using the SSO federation disables the local Keycloak login (for the realm)
+    # -- Enforce login for the IdP configured with this very key in 'idps' using the SSO federation disables the local Keycloak login (for the realm)
     enforceFederatedLogin: ""
     # -- A dictionary for each IdP with a 'name' and a 'idpDetails' like seen in the following example.
     # -- A subkey in the dictionary can contain a dictionary itself defining an existing secret with name and key or a plain value. The value of an existing secret supersedes a plain value. Both will replace the dictionary underneath the the subkey as its value.
@@ -264,7 +264,7 @@ config:
     #       filteredByClaim: 'false'
     #       caseSensitiveOriginalUsername: 'true'
     #     postBrokerLoginFlowAlias: ''
-    idp: {}
+    idps: {}
 
   # Extended 2FA configuration
   twoFactorSettings:

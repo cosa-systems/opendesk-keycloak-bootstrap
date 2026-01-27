@@ -17,7 +17,7 @@
       providerId: "basic-flow"
       topLevel: true
       builtIn: false
-    status_code: [201,409]
+    status_code: [201, 409]
   register: "create_flow_response"
 
 - name: "Configuring 'sso-federation-flow': Setting exeuction steps to 'REQUIRED'"
@@ -25,9 +25,9 @@
   ansible.builtin.include_tasks: "configure_sso_federation_authexecution.yml"
 
 - name: "Creating upstream IdP object and handle upstream sso enforcement option"
-  when: "global_cfgobj.config.ssoFederation.value is defined"
+  when: "global_cfgobj.config.ssoFederation.idps is defined"
   ansible.builtin.include_tasks: "configure_sso_federation_upstreamidp_handleenforcement.yml"
-  loop: "{{ global_cfgobj.config.ssoFederation.value | dict2items }}"
+  loop: "{{ global_cfgobj.config.ssoFederation.idps | dict2items }}"
   loop_control:
     loop_var: "ssoFederationItem"
 
