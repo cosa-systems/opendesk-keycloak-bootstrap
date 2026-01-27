@@ -88,7 +88,7 @@ Determine volumeMount - build the 'volumeMount' section according to the name/ke
 */}}
 {{- define "determine.mount" -}}
 {{- $sanitisedName := include "sanitisedName" (list .existingSecret.name .existingSecret.key) }}
-- mountPath: {{ printf "/app/secrets/%s.yaml" $sanitisedName | quote }}
+- mountPath: {{ printf "/app/secrets/%s" $sanitisedName | quote }}
   name: {{ $sanitisedName | quote }}
   subPath: {{ .existingSecret.key | quote }}
 {{- end }}
