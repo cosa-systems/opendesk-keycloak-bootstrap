@@ -73,9 +73,9 @@ Find possible existing secret name/key-pair and determine volume or volumeMount
 {{- $where := index . "where" -}}
 {{- $what := printf "determine.%s" (index . "what") -}}
 {{- range $where }}
-{{- range $key, $value := . }}
-{{- if and $value (kindIs "map" $value) }}
-{{- if hasKey $value "existingSecret" }}
+{{- if and . (kindIs "map" .) }}
+{{- if hasKey . "existingSecret" }}
+{{- range . }}
 {{- include $what . }}
 {{- end }}
 {{- end }}
@@ -87,20 +87,20 @@ Find possible existing secret name/key-pair and determine volume or volumeMount
 Determine volumeMount - build the 'volumeMount' section according to the name/key-pair
 */}}
 {{- define "determine.mount" -}}
-{{- $sanitisedName := include "sanitisedName" (list .existingSecret.name .existingSecret.key) }}
+{{- $sanitisedName := include "sanitisedName" (list .name .key) }}
 - mountPath: {{ printf "/app/secrets/%s" $sanitisedName | quote }}
   name: {{ $sanitisedName | quote }}
-  subPath: {{ .existingSecret.key | quote }}
+  subPath: {{ .key | quote }}
 {{- end }}
 
 {{/*
 Determine volume - build the 'volume' section according to the name/key-pair
 */}}
 {{- define "determine.volume" -}}
-{{- $sanitisedName := include "sanitisedName" (list .existingSecret.name .existingSecret.key) }}
+{{- $sanitisedName := include "sanitisedName" (list .name .key) }}
 - name: {{ $sanitisedName | quote }}
   secret:
-    secretName: {{ .existingSecret.name | quote }}
+    secretName: {{ .name | quote }}
 {{- end }}
 
 {{/*
