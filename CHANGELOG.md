@@ -1,3 +1,10 @@
+# [2.7.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.6.0...v2.7.0) (2026-02-04)
+
+
+### Features
+
+* Streamline user federation setting (import users / read mappers always from ldap) ([e628e74](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/e628e744f47cdd16219ad11f784fc8161073db76))
+
 # [2.6.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.5.0...v2.6.0) (2025-04-11)
 
 
