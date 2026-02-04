@@ -1,0 +1,67 @@
+# SPDX-FileCopyrightText: 2026 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: "Get 'UserStorageProvider' components"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/components?parentId={{ global_opendesk_realm }}&type=org.keycloak.storage.UserStorageProvider"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "components"
+
+- name: "Get the component with name 'ldap-provider' - if this step fails the component couldn't be found."
+  set_fact:
+    ldap_provider_id: >-
+      {{ components.json
+         | selectattr('name', 'equalto', 'ldap-provider')
+         | map(attribute='id')
+         | list
+         | first }}
+
+- name: "Enable the user import from LDAP as this is the only supported setup by Nubus, but was enabled for new deployments the first time with openDesk 1.8.0"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/components/{{ ldap_provider_id }}"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "PUT"
+    body_format: "json"
+    body:
+      providerId: "ldap"
+      providerType: "org.keycloak.storage.UserStorageProvider"
+      config:
+        importEnabled: [true]
+    status_code: [204]
+
+- name: "Get 'LDAPStorageMapper' components for 'ldap-provider'"
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/components?parent={{ ldap_provider_id }}&type=org.keycloak.storage.ldap.mappers.LDAPStorageMapper"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "GET"
+    status_code: [200]
+  register: "ldapmappers"
+
+- name: "Set all LDAP 'always.read.value.from.ldap' to 'true' for all mappers having it set to false ATM"
+  loop: "{{ ldapmappers.json }}"
+  when: item.providerId == "user-attribute-ldap-mapper"
+        and item.config is defined
+        and ('always.read.value.from.ldap' not in item.config
+            or item.config['always.read.value.from.ldap'][0] == 'false')
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/components/{{ item.id }}"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "PUT"
+    body_format: "json"
+    body:
+      providerId: "{{ item.providerId }}"
+      providerType: "{{ item.providerType }}"
+      config:
+        always.read.value.from.ldap: [true]
+    status_code: [204]
+...

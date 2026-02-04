@@ -11,6 +11,9 @@
         var: "global_cfgobj"
       when: "global_cfgobj.config.debug.enabled|bool"
 
+    # To get the access token the Keycloak must be up and running,
+    # we do some loops in order to wait for the service in
+    # `set_global_accesstoken.yml`
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     - ansible.builtin.include_tasks: "./configure_realmsettings.yml"
 
@@ -18,23 +21,30 @@
     # so no need to request it here in the `main.yml`
     - ansible.builtin.include_tasks: "./configure_client_access_restriction.yml"
 
-    # To get the access token the Keycloak must be up and running,
-    # we do some loops in order to wait for the service in
-    # `set_global_accesstoken.yml`
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     - ansible.builtin.include_tasks: "./configure_sso_federation.yml"
 
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     - ansible.builtin.include_tasks: "./configure_set_2fa_groups.yml"
 
-
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     - ansible.builtin.include_tasks: "./configure_create_groups.yml"
 
-    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     # To configure the client permissions we require the Intercom Service
     # deployment to be completed as it creates the related OIDC client
     # that is required for the client permission setup.
+    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     - ansible.builtin.include_tasks: "./configure_clientpermissions.yml"
+
+    # With new deployments Nubus switched in openDesk 1.8 to synchronize
+    # users from the LDAP into the Keycloak DB. This switch wasn't set for
+    # existing deployments and also all LDAP mappers haven't been updated
+    # to always read from LDAP. The following section addresses the change
+    # also for existing deployments. The section can be removed once
+    # - the upstream bug (https://forge.univention.org/bugzilla/show_bug.cgi?id=59024) is fixed
+    # - Nubus supports the "always read from LDAP" option on custom mappers (or sets the option by default)
+    # - the next mandatory openDesk release (in terms of upgrade path) contained the code below.
+    - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
+    - ansible.builtin.include_tasks: "./fix_ldap_sync.yml"
 
 ...
