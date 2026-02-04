@@ -1,6 +1,16 @@
 # SPDX-FileCopyrightText: 2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-License-Identifier: Apache-2.0
 ---
+- name: "Check if the enforced federated login is defined with that very name."
+  when: >-
+    global_cfgobj.config.ssoFederation.enabled
+    and global_cfgobj.config.ssoFederation.enforceFederatedLogin is defined
+  ansible.builtin.assert:
+    that:
+      - global_cfgobj.config.ssoFederation.enforceFederatedLogin in global_cfgobj.config.ssoFederation.idps | list
+    fail_msg: "Enforced federated login '{{ global_cfgobj.config.ssoFederation.enforceFederatedLogin }}' is not defined as IdP!"
+    success_msg: "Enforced federated login '{{ global_cfgobj.config.ssoFederation.enforceFederatedLogin }}' is defined as IdP."
+
 # We always create the flow, even if SSO federation is not active, as we do not reference it
 # anywhere else, it does not hurt.
 - name: "Create 'sso-federation-flow' object"
