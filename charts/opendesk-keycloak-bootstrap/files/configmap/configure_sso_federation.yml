@@ -62,6 +62,7 @@
          | selectattr('alias', 'defined')
          | map(attribute='alias')
          | list
+         | select('match', 'sso-federation-idp')
       }}
 
 - name: "Cleanup unconfigured IdPs"
