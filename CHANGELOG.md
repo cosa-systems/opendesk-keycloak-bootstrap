@@ -1,3 +1,10 @@
+## [2.7.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.7.0...v2.7.1) (2026-02-18)
+
+
+### Bug Fixes
+
+* **ldap_sync:** Allow active decision to enable LDAP user import to Keycloak for pre 1.8.0 deployments ([185616f](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/185616f429bc9182bef7fb06c9f04d8c0bb45a09))
+
 # [2.7.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.6.0...v2.7.0) (2026-02-04)
 
 
