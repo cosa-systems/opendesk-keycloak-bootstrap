@@ -36,7 +36,7 @@
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     - ansible.builtin.include_tasks: "./configure_clientpermissions.yml"
 
-    # With new deployments Nubus switched in openDesk 1.8 to synchronize
+    # With new deployments Nubus switched in openDesk 1.8 to import
     # users from the LDAP into the Keycloak DB. This switch wasn't set for
     # existing deployments and also all LDAP mappers haven't been updated
     # to always read from LDAP. The following section addresses the change
@@ -46,5 +46,4 @@
     # - the next mandatory openDesk release (in terms of upgrade path) contained the code below.
     - ansible.builtin.include_tasks: "./set_global_accesstoken.yml"
     - ansible.builtin.include_tasks: "./fix_ldap_sync.yml"
-
 ...

@@ -11,16 +11,20 @@
     status_code: [200]
   register: "components"
 
-- name: "Get the component with name 'ldap-provider' - if this step fails the component couldn't be found."
+- name: "Get the component with name 'ldap-provider'"
   set_fact:
     ldap_provider_id: >-
       {{ components.json
-         | selectattr('name', 'equalto', 'ldap-provider')
-         | map(attribute='id')
-         | list
-         | first }}
+          | selectattr('name', 'equalto', 'ldap-provider')
+          | map(attribute='id')
+          | list
+          | first }}
 
-- name: "Enable the user import from LDAP as this is the only supported setup by Nubus, but was enabled for new deployments the first time with openDesk 1.8.0"
+- debug:
+    msg: "ldap_import_flag={{ ldap_import_flag | default('UNDEFINED') }}"
+
+- name: "Configure LDAP import setting"
+  when: ldap_import_flag is boolean
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/components/{{ ldap_provider_id }}"
     headers:
@@ -32,7 +36,7 @@
       providerId: "ldap"
       providerType: "org.keycloak.storage.UserStorageProvider"
       config:
-        importEnabled: [true]
+        importEnabled: ["{{ ldap_import_flag }}"]
     status_code: [204]
 
 - name: "Get 'LDAPStorageMapper' components for 'ldap-provider'"

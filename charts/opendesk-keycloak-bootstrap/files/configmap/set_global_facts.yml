@@ -19,6 +19,7 @@
     two_factor_role_name: "{{ global_cfgobj.config.twoFactorSettings.roleName }}"
     two_factor_additional_groups: "{{ global_cfgobj.config.twoFactorSettings.additionalGroups | default([]) }}"
     client_access_restriction_details: "{{ global_cfgobj.config.clientAccessRestrictions | default({}) }}"
+    ldap_import_flag: "{{ global_cfgobj.config.ldapFederation.importUsers | default(None) }}"
 
 - name: "Global: Set Keycloak URL for external connection"
   ansible.builtin.set_fact:
