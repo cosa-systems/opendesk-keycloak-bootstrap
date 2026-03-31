@@ -21,6 +21,33 @@
          | list
          | first }}
 
+- name: "Get the priority of the element that has 'providerId' set to 'identity-provider-redirector'"
+  set_fact:
+    redirector_execution_priority: >-
+      {{ executions_list.json
+         | selectattr('providerId', 'defined')
+         | selectattr('providerId', 'equalto', 'identity-provider-redirector')
+         | map(attribute='priority')
+         | list
+         | first }}
+
+- name: "Setting execution steps to 'identity-provider-redirector' to 'REQUIRED' when enforcement is enabled"
+  when: >-
+    global_cfgobj.config.ssoFederation.enabled
+    and global_cfgobj.config.ssoFederation.enforceFederatedLogin is defined
+  ansible.builtin.uri:
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/authentication/flows/2fa-browser/executions"
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ global_accesstoken }}"
+    method: "PUT"
+    body_format: "json"
+    body:
+      id: "{{ redirector_execution_id }}"
+      requirement: "REQUIRED"
+      priority: "{{ redirector_execution_priority }}"
+    status_code: [204]
+
 - name: "Enforcing SSO federated login"
   when: >-
     global_cfgobj.config.ssoFederation.enabled
