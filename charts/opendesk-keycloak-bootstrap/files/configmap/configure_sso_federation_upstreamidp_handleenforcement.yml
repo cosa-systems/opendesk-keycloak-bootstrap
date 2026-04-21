@@ -9,6 +9,6 @@
 
 - name: "Create list of configured IdPs"
   ansible.builtin.set_fact:
-    configuredSsoFederationIdps: "{{ configuredSsoFederationIdps | default([]) + ['sso-federation-idp-' + ssoFederationItem.key] }}"
+    configuredSsoFederationIdps: "{{ configuredSsoFederationIdps | default([]) + [sso_federation_idp_prefix + '-' + ssoFederationItem.key] }}"
 
 ...

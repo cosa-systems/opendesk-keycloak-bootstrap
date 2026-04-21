@@ -50,7 +50,7 @@
     method: "GET"
     body_format: "json"
     body:
-      search: "sso-federation-idp"
+      search: "{{ sso_federation_idp_prefix }}"
     status_code: [200]
   register: "availableSsoFederationIdpsObject"
 
@@ -62,7 +62,7 @@
          | selectattr('alias', 'defined')
          | map(attribute='alias')
          | list
-         | select('match', 'sso-federation-idp')
+         | select('match', sso_federation_idp_prefix)
       }}
 
 - name: "Cleanup unconfigured IdPs"

@@ -8,11 +8,11 @@
       {{
         ssoFederationItem.value.idpDetails
         | combine({ 'displayName': ssoFederationItem.value.name }, recursive=True)
-        | combine({ 'alias': 'sso-federation-idp-' + ssoFederationItem.key }, recursive=True)
+        | combine({ 'alias': sso_federation_idp_prefix + '-' + ssoFederationItem.key }, recursive=True)
         | combine({ 'firstBrokerLoginFlowAlias': 'sso-federation-flow' }, recursive=True)
       }}
 
-- name: "Create 'sso-federation-idp' object"
+- name: "Create upstream IdP object"
   when: "ssoFederationItem.value.idpDetails.enabled | bool"
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/identity-provider/instances"
@@ -28,7 +28,7 @@
 - name: "Update IdP in case it already exists"
   when: "ssoFederationItem.value.idpDetails.enabled | bool and create_idp_response.status == 409"
   ansible.builtin.uri:
-    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/identity-provider/instances/sso-federation-idp-{{ ssoFederationItem.key }}"
+    url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/identity-provider/instances/{{ sso_federation_idp_prefix }}-{{ ssoFederationItem.key }}"
     headers:
       Accept: "application/json"
       Authorization: "Bearer {{ global_accesstoken }}"

@@ -33,9 +33,9 @@
     method: "POST"
     body_format: "json"
     body:
-      alias: "sso-federation-idp-{{ ssoFederationItem.key }}"
+      alias: "{{ sso_federation_idp_prefix }}-{{ ssoFederationItem.key }}"
       config:
-        defaultProvider: "sso-federation-idp-{{ ssoFederationItem.key }}"
+        defaultProvider: "{{ sso_federation_idp_prefix }}-{{ ssoFederationItem.key }}"
     status_code: [201]
 
 ...
