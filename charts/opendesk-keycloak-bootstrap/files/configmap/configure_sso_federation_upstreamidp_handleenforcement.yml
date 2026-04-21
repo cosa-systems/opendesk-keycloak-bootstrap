@@ -1,6 +1,12 @@
 # SPDX-FileCopyrightText: 2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-License-Identifier: Apache-2.0
 ---
+- name: "Compute alias for this IdP"
+  ansible.builtin.set_fact:
+    sso_federation_current_idp_alias: >-
+      {{ sso_federation_idp_prefix if ssoFederationItem.key == sso_federation_legacy_key
+         else sso_federation_idp_prefix + '-' + ssoFederationItem.key }}
+
 - name: "Creating upstream IdP object"
   ansible.builtin.include_tasks: "configure_sso_federation_upstreamidp.yml"
 
@@ -9,6 +15,6 @@
 
 - name: "Create list of configured IdPs"
   ansible.builtin.set_fact:
-    configuredSsoFederationIdps: "{{ configuredSsoFederationIdps | default([]) + [sso_federation_idp_prefix + '-' + ssoFederationItem.key] }}"
+    configuredSsoFederationIdps: "{{ configuredSsoFederationIdps | default([]) + [sso_federation_current_idp_alias] }}"
 
 ...

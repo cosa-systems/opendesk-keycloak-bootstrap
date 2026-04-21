@@ -52,7 +52,7 @@
     and
     (
       not (global_cfgobj.config.ssoFederation.enabled | default(false))
-      or not (sso_federation_idp_prefix + '-' + global_cfgobj.config.ssoFederation.enforceFederatedLogin == authentication_provider)
+      or not (sso_federation_enforced_idp_alias == authentication_provider)
     )
     and redirector_execution_authentication_config_id is defined
   ansible.builtin.uri:

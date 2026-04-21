@@ -74,6 +74,12 @@
   loop_control:
     loop_var: "ssoFederationIdp"
 
+- name: "Compute enforced IdP alias for cleanup"
+  ansible.builtin.set_fact:
+    sso_federation_enforced_idp_alias: >-
+      {{ sso_federation_idp_prefix if global_cfgobj.config.ssoFederation.enforceFederatedLogin == sso_federation_legacy_key
+         else sso_federation_idp_prefix + '-' + global_cfgobj.config.ssoFederation.enforceFederatedLogin }}
+
 - name: "Cleanup enforced SSO federated login"
   ansible.builtin.include_tasks: "configure_sso_federation_handleenforcement_cleanup.yml"
 
