@@ -1,3 +1,27 @@
+# [2.8.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.7.1...v2.8.0) (2026-04-21)
+
+
+### Bug Fixes
+
+* **chart:** Adapt to dictionary name ([0f1feca](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/0f1feca0763b9eb7656632e93e6d1a2c707b6605))
+* **chart:** Adapt to new dictionary structure ([19bf3b4](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/19bf3b4cab707a1979567b8e4279cc9234621396))
+* **chart:** Adapt to new structure ([d0a33a1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/d0a33a15daf5629af72d3957394eaa2b5e8f1d60))
+* **chart:** Add an error message when enforced IdP is not defined in dict of IdPs ([bcaf43d](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/bcaf43da79894125dd71a25ba4eaac90968e9720))
+* **chart:** Remove unnecessary secrets file ending ([35ba176](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/35ba176b1cba80090888555a28134d3f6a87503e))
+* Replace static prefix with a variable defined once ([6521c9f](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/6521c9f63c1787c69b0e2fd960d104fb01a7e2c7))
+* Support for key `legacy-single-idp-config` that will ensure stable config identifier in openDesk ([536f174](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/536f17422d5d86f33262c87a4bc6f5e74292150d))
+* Update boolean settings in Ansible ([3dde146](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/3dde146f550af7f0aaa0c5e7225df007b870b2db))
+
+
+### Features
+
+* **chart:** Do not allow local login on IdP enforcement ([f29fd4b](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/f29fd4bdb4bb52123547fb9dcdaeda165595612c))
+* **chart:** Narrow down list of IdPs to oD managed ones ([1c84977](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/1c849771645eec3c63011719c88ba355242c3729))
+* **chart:** Prepare the possiblity to use external secrets for secret values in clients ([f4407b9](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/f4407b9fe0ab712b790e724daa002b1af01018a3))
+* **chart:** Revert: Do not allow local login on IdP enforcement ([9e71354](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/9e71354275bf74b10dd188e3c0d2f6918637aefa))
+* **chart:** Rework existing secrets support to be inline ([f34ba98](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/f34ba980f47221462145a42d19d984c74707d328))
+* **chart:** Rework of IdP config option and external secrets ([f15bacd](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/f15bacdfd26fd400d8d36af3320ba467bf54c75b))
+
 ## [2.7.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.7.0...v2.7.1) (2026-02-18)
 
 
