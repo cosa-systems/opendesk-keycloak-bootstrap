@@ -17,7 +17,7 @@
         "ssoSessionMaxLifespan": {{ global_cfgobj.config.realmSettings.ssoSessionMaxLifespan }},
         "accessTokenLifespanForImplicitFlow": {{ global_cfgobj.config.realmSettings.accessTokenLifespanForImplicitFlow }},
         "offlineSessionIdleTimeout": {{ global_cfgobj.config.realmSettings.offlineSessionIdleTimeout }},
-        "offlineSessionMaxLifespanEnabled": {{ global_cfgobj.config.realmSettings.offlineSessionMaxLifespanEnabled }},
+        "offlineSessionMaxLifespanEnabled": {{ global_cfgobj.config.realmSettings.offlineSessionMaxLifespanEnabled | lower }},
         "offlineSessionMaxLifespan": {{ global_cfgobj.config.realmSettings.offlineSessionMaxLifespan }},
         "clientSessionIdleTimeout": {{ global_cfgobj.config.realmSettings.clientSessionIdleTimeout }},
         "clientSessionMaxLifespan": {{ global_cfgobj.config.realmSettings.clientSessionMaxLifespan }},
@@ -30,7 +30,7 @@
         "actionTokenGeneratedByUserLifespan": {{ global_cfgobj.config.realmSettings.actionTokenGeneratedByUserLifespan }},
         "oauth2DeviceCodeLifespan": {{ global_cfgobj.config.realmSettings.oauth2DeviceCodeLifespan }},
         "oauth2DevicePollingInterval": {{ global_cfgobj.config.realmSettings.oauth2DevicePollingInterval }},
-        "revokeRefreshToken": {{ global_cfgobj.config.realmSettings.revokeRefreshToken }},
+        "revokeRefreshToken": {{ global_cfgobj.config.realmSettings.revokeRefreshToken | lower }},
         "refreshTokenMaxReuse": {{ global_cfgobj.config.realmSettings.refreshTokenMaxReuse }}
       }
     status_code: [204]
@@ -45,7 +45,7 @@
     body_format: "json"
     body: |
       {
-        "rememberMe": {{ global_cfgobj.config.realmSettings.rememberMe }},
+        "rememberMe": {{ global_cfgobj.config.realmSettings.rememberMe | lower }},
         "ssoSessionIdleTimeoutRememberMe":
           {{ global_cfgobj.config.realmSettings.ssoSessionIdleTimeoutRememberMe }},
         "ssoSessionMaxLifespanRememberMe":

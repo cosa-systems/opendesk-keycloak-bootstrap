@@ -3,8 +3,8 @@
 ---
 - name: "Check if the enforced federated login is defined with that very name."
   when: >-
-    global_cfgobj.config.ssoFederation.enabled
-    and global_cfgobj.config.ssoFederation.enforceFederatedLogin is defined
+    global_cfgobj.config.ssoFederation.enabled | bool
+    and global_cfgobj.config.ssoFederation.enforceFederatedLogin | length > 0
   ansible.builtin.assert:
     that:
       - global_cfgobj.config.ssoFederation.enforceFederatedLogin in global_cfgobj.config.ssoFederation.idps | list

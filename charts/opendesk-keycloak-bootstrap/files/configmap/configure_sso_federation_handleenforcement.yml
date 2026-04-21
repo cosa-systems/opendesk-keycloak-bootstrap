@@ -23,7 +23,7 @@
 
 - name: "Enforcing SSO federated login"
   when: >-
-    global_cfgobj.config.ssoFederation.enabled
+    global_cfgobj.config.ssoFederation.enabled | bool
     and global_cfgobj.config.ssoFederation.enforceFederatedLogin == ssoFederationItem.key
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/authentication/executions/{{ redirector_execution_id }}/config"

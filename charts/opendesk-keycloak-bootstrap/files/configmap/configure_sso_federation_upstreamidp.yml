@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 ---
 - name: "Merge explicit values into IdP config"
-  when: "global_cfgobj.config.ssoFederation.enabled"
+  when: "global_cfgobj.config.ssoFederation.enabled | bool"
   set_fact:
     upstream_idp_config: >-
       {{
@@ -13,7 +13,7 @@
       }}
 
 - name: "Create 'sso-federation-idp' object"
-  when: "ssoFederationItem.value.idpDetails.enabled"
+  when: "ssoFederationItem.value.idpDetails.enabled | bool"
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/identity-provider/instances"
     headers:
@@ -26,7 +26,7 @@
   register: "create_idp_response"
 
 - name: "Update IdP in case it already exists"
-  when: "ssoFederationItem.value.idpDetails.enabled and create_idp_response.status == 409"
+  when: "ssoFederationItem.value.idpDetails.enabled | bool and create_idp_response.status == 409"
   ansible.builtin.uri:
     url: "{{ global_keycloak_url }}/admin/realms/{{ global_opendesk_realm }}/identity-provider/instances/sso-federation-idp-{{ ssoFederationItem.key }}"
     headers:
