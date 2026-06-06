@@ -67,18 +67,38 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-Find possible existing secret name/key-pair and determine volume or volumeMount
+Find possible existing secret name/key-pairs and determine volume or volumeMount.
+Walks the given subtree recursively so an `existingSecret` is found at any depth
+(e.g. a client's `secret.existingSecret`), mirroring provisionValuesYaml.py which
+resolves existingSecret references recursively. The previous implementation only
+matched `existingSecret` as a *direct* key of each client, so nested references
+were never mounted and provisionValuesYaml.py then failed with FileNotFoundError.
 */}}
 {{- define "preparePossibleExistingSecret" -}}
 {{- $where := index . "where" -}}
 {{- $what := printf "determine.%s" (index . "what") -}}
-{{- range $where }}
-{{- if and . (kindIs "map" .) }}
-{{- if hasKey . "existingSecret" }}
-{{- range . }}
-{{- include $what . }}
+{{- include "collectExistingSecrets" (dict "node" $where "what" $what) -}}
+{{- end }}
+
+{{/*
+Recursive worker for preparePossibleExistingSecret: for every map that carries an
+`existingSecret` name/key-pair, emit the requested section ($what) for that pair;
+otherwise descend into the map/list values.
+*/}}
+{{- define "collectExistingSecrets" -}}
+{{- $node := index . "node" -}}
+{{- $what := index . "what" -}}
+{{- if kindIs "map" $node }}
+{{- if hasKey $node "existingSecret" }}
+{{- include $what (index $node "existingSecret") }}
+{{- else }}
+{{- range $node }}
+{{- include "collectExistingSecrets" (dict "node" . "what" $what) }}
 {{- end }}
 {{- end }}
+{{- else if kindIs "slice" $node }}
+{{- range $node }}
+{{- include "collectExistingSecrets" (dict "node" . "what" $what) }}
 {{- end }}
 {{- end }}
 {{- end }}
