@@ -109,7 +109,7 @@ Determine volumeMount - build the 'volumeMount' section according to the name/ke
 {{- define "determine.mount" -}}
 {{- $sanitisedName := include "sanitisedName" (list .name .key) }}
 - mountPath: {{ printf "/app/secrets/%s" $sanitisedName | quote }}
-  name: {{ $sanitisedName | quote }}
+  name: {{ include "volumeName" (list .name .key) | quote }}
   subPath: {{ .key | quote }}
 {{- end }}
 
@@ -117,8 +117,8 @@ Determine volumeMount - build the 'volumeMount' section according to the name/ke
 Determine volume - build the 'volume' section according to the name/key-pair
 */}}
 {{- define "determine.volume" -}}
-{{- $sanitisedName := include "sanitisedName" (list .name .key) }}
-- name: {{ $sanitisedName | quote }}
+{{- $volName := include "volumeName" (list .name .key) }}
+- name: {{ $volName | quote }}
   secret:
     secretName: {{ .name | quote }}
 {{- end }}
@@ -128,4 +128,19 @@ Sanitised name - return a valid and sanitised name for the volume
 */}}
 {{- define "sanitisedName" -}}
 {{- regexReplaceAll "\\W+" (printf "%s %s" (index . 0) (index . 1)) "-" }}
+{{- end }}
+
+{{/*
+Volume name for a secret name/key pair: a valid RFC 1123 label (lowercase
+alphanumerics and '-', max 63 chars). Distinct from sanitisedName, which is used
+for the mountPath and must match the path provisionValuesYaml.py reads (so it keeps
+the secret/key casing + underscores that are illegal in a Kubernetes object name).
+*/}}
+{{- define "volumeName" -}}
+{{- $raw := trimAll "-" (regexReplaceAll "[^a-z0-9]+" (lower (printf "%s-%s" (index . 0) (index . 1))) "-") -}}
+{{- if gt (len $raw) 63 -}}
+{{- printf "%s-%s" (trimSuffix "-" (trunc 52 $raw)) (sha1sum $raw | trunc 10) -}}
+{{- else -}}
+{{- $raw -}}
+{{- end -}}
 {{- end }}
