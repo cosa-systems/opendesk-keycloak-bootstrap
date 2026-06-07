@@ -13,7 +13,13 @@
     global_admin_password: "{{ global_admin.password }}"
     global_keycloak_host: "{{ global_cfgobj.global.hosts.keycloak }}.{{ global_cfgobj.global.domain }}"
     global_portal_url: "https://{{ global_cfgobj.global.hosts.portal }}.{{ global_cfgobj.global.domain }}"
-    global_intercom_url: "https://{{ global_cfgobj.global.hosts.intercomService }}.{{ global_cfgobj.global.domain }}"
+    # cosa: the bootstrap pod can't reach the public ICS ingress URL from in-cluster
+    # (no hairpin to the external LB), so the "Ensure IntercomService is up" liveness
+    # check in configure_clientpermissions.yml timed out (60 retries -> job fails).
+    # ICS returns 200 on its internal Service, so point the readiness check there.
+    # The public URL is still used for the opendesk-intercom OIDC client's
+    # callback/backchannel URLs (set in values-opendesk-keycloak-bootstrap, not here).
+    global_intercom_url: "http://intercom-service:8008"
     global_opendesk_realm: "{{ global_cfgobj.config.keycloak.realm }}"
     precreate_groups: "{{ global_cfgobj.config.precreateGroups | default([]) }}"
     two_factor_role_name: "{{ global_cfgobj.config.twoFactorSettings.roleName }}"
