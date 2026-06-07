@@ -71,6 +71,11 @@ spec:
           imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           command:
             - "/app/entrypoint.sh"
+          # The image's provisionValuesYaml.py reads existingSecret files via the
+          # relative path "./app/secrets/<name>". Run from / so that canonicalises on
+          # the /app/secrets mountPath below. Every other read in the image is absolute
+          # (/app/values.yaml, /tmp/values.yaml, /app/admin.yaml), so this is safe.
+          workingDir: "/"
           volumeMounts:
             - mountPath: "/app/values.yaml"
               name: "secrets-volume"
