@@ -104,11 +104,15 @@ otherwise descend into the map/list values.
 {{- end }}
 
 {{/*
-Determine volumeMount - build the 'volumeMount' section according to the name/key-pair
+Determine volumeMount - build the 'volumeMount' section according to the name/key-pair.
+The mountPath must match where the image's provisionValuesYaml.py actually reads the
+file: it runs from WorkingDir /app and opens the relative path "./app/secrets/<name>",
+which resolves to /app/app/secrets/<name>. (subPath projects just the one key as that
+file.) The "/app/app" doubling looks odd but mirrors the image's own relative read.
 */}}
 {{- define "determine.mount" -}}
 {{- $sanitisedName := include "sanitisedName" (list .name .key) }}
-- mountPath: {{ printf "/app/secrets/%s" $sanitisedName | quote }}
+- mountPath: {{ printf "/app/app/secrets/%s" $sanitisedName | quote }}
   name: {{ include "volumeName" (list .name .key) | quote }}
   subPath: {{ .key | quote }}
 {{- end }}
