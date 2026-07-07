@@ -71,13 +71,16 @@ Find possible existing secret name/key-pair and determine volume or volumeMount
 */}}
 {{- define "preparePossibleExistingSecret" -}}
 {{- $where := index . "where" -}}
-{{- $what := printf "determine.%s" (index . "what") -}}
+{{- $whatArg := index . "what" -}}
+{{- $what := printf "determine.%s" $whatArg -}}
 {{- range $where }}
 {{- if and . (kindIs "map" .) }}
 {{- if hasKey . "existingSecret" }}
-{{- range . }}
-{{- include $what . }}
+{{- if and (kindIs "map" .existingSecret) .existingSecret.name .existingSecret.key }}
+{{- include $what .existingSecret }}
 {{- end }}
+{{- else }}
+{{- include "preparePossibleExistingSecret" (dict "where" . "what" $whatArg) }}
 {{- end }}
 {{- end }}
 {{- end }}
