@@ -1,3 +1,10 @@
+## [2.8.2](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.8.1...v2.8.2) (2026-07-07)
+
+
+### Bug Fixes
+
+* **ci:** Update to new gitlab-config ([c05695b](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/c05695b0d5bed5ea4db8276c1ba4d9707b4d2a38))
+
 ## [2.8.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.8.0...v2.8.1) (2026-07-07)
 
 
