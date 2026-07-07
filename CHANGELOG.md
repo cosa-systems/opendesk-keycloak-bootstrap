@@ -1,3 +1,10 @@
+## [2.8.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.8.0...v2.8.1) (2026-07-07)
+
+
+### Bug Fixes
+
+* **chart:** Mount per-client `existingSecret` for opendesk/custom clients ([2f2a8fe](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/2f2a8fe5a931be9125a893409ea30562f04a880b))
+
 # [2.8.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.7.1...v2.8.0) (2026-04-21)
 
 
