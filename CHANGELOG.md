@@ -1,3 +1,10 @@
+# [2.9.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.8.2...v2.9.0) (2026-07-15)
+
+
+### Features
+
+* **ansible:** Remove legacy token exchange setup required `clientpermissions` in preparation to use token exchange v2 ([8a91e39](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/8a91e398d920e2a93986f717c6b05c5787e680a6))
+
 ## [2.8.2](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.8.1...v2.8.2) (2026-07-07)
 
 
