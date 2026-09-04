@@ -15,7 +15,7 @@ stringData:
   values.yaml: |
     {{ .Values | toYaml | nindent 4 }}
 ...
-{{- if not .Values.config.keycloak.admin.secret.name }}
+{{- if not (or .Values.config.keycloak.admin.secret.name .Values.config.keycloak.admin.existingSecret.name) }}
 ---
 kind: "Secret"
 apiVersion: "v1"
