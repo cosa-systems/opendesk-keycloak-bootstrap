@@ -116,6 +116,15 @@ config:
         # --   username:
         # --   password:
         name: ""
+      # Admin password from an existing secret that holds it under a key of its
+      # own, e.g. one provisioned by an external secret manager. Takes
+      # precedence over `values.password`; `secret.name` above wins over both.
+      # The username keeps coming from `values.username`.
+      existingSecret:
+        # -- Name of an existing Secret holding the admin password.
+        name: ""
+        # -- Key within that Secret. Required when `name` is set.
+        key: ""
     # -- The name of the realm that is going to contain all the configuration
     realm: "opendesk"
 

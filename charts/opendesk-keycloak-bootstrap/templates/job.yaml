@@ -62,6 +62,42 @@ spec:
       {{- if .Values.topologySpreadConstraints }}
       topologySpreadConstraints: {{- include "common.tplvalues.render" (dict "value" .Values.topologySpreadConstraints "context" .) | nindent 8 }}
       {{- end }}
+      {{- if .Values.config.keycloak.admin.existingSecret.name }}
+      {{- $adminKey := required "config.keycloak.admin.existingSecret.key is required when .name is set" .Values.config.keycloak.admin.existingSecret.key }}
+      {{- /*
+      The bootstrap reads its credentials from /app/admin.yaml. When the admin
+      password comes from a Secret of its own, that file is assembled here
+      instead of being rendered into a Secret, so the password stays out of the
+      manifests. The password is escaped for the double-quoted YAML scalar it
+      is written into.
+      */}}
+      initContainers:
+        - name: "prepare-admin-credentials"
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          image: "{{ coalesce .Values.image.registry .Values.global.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - |
+              set -eu
+              printf 'username: "%s"\n' '{{ .Values.config.keycloak.admin.values.username }}' > /admin/admin.yaml
+              printf 'password: "%s"\n' \
+                "$(sed -e 's/[\\"]/\\&/g' /admin-password/{{ $adminKey }})" \
+                >> /admin/admin.yaml
+          volumeMounts:
+            - mountPath: "/admin-password"
+              name: "admin-password"
+              readOnly: true
+            - mountPath: "/admin"
+              name: "admin-creds"
+          {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | nindent 12 | trim }}
+          {{- end }}
+      {{- end }}
       containers:
         - name: "opendesk-keycloak-bootstrap"
           {{- if .Values.containerSecurityContext.enabled }}
@@ -106,9 +142,21 @@ spec:
         - name: "secrets-volume"
           secret:
             secretName: "{{ include "common.names.fullname" . }}"
+        {{- if .Values.config.keycloak.admin.existingSecret.name }}
+        - name: "admin-creds"
+          emptyDir:
+            sizeLimit: "1Mi"
+        - name: "admin-password"
+          secret:
+            secretName: {{ .Values.config.keycloak.admin.existingSecret.name | quote }}
+            items:
+              - key: {{ .Values.config.keycloak.admin.existingSecret.key | quote }}
+                path: {{ .Values.config.keycloak.admin.existingSecret.key | quote }}
+        {{- else }}
         - name: "admin-creds"
           secret:
             secretName: {{ .Values.config.keycloak.admin.secret.name | default (printf "%s-%s" (include "common.names.fullname" .) "admin-creds") | quote }}
+        {{- end }}
         - name: "temp-dir"
           emptyDir:
             sizeLimit: "20Mi"
