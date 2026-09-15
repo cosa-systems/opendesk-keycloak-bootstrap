@@ -92,7 +92,7 @@ Determine volumeMount - build the 'volumeMount' section according to the name/ke
 {{- define "determine.mount" -}}
 {{- $sanitisedName := include "sanitisedName" (list .name .key) }}
 - mountPath: {{ printf "/app/secrets/%s" $sanitisedName | quote }}
-  name: {{ $sanitisedName | quote }}
+  name: {{ include "volumeName" (list .name .key) | quote }}
   subPath: {{ .key | quote }}
 {{- end }}
 
@@ -100,15 +100,33 @@ Determine volumeMount - build the 'volumeMount' section according to the name/ke
 Determine volume - build the 'volume' section according to the name/key-pair
 */}}
 {{- define "determine.volume" -}}
-{{- $sanitisedName := include "sanitisedName" (list .name .key) }}
-- name: {{ $sanitisedName | quote }}
+{{- $volumeName := include "volumeName" (list .name .key) }}
+- name: {{ $volumeName | quote }}
   secret:
     secretName: {{ .name | quote }}
 {{- end }}
 
 {{/*
-Sanitised name - return a valid and sanitised name for the volume
+Sanitised name - the file name below /app/secrets that the key is mounted at. The bootstrap image
+derives the same name from the name/key-pair (sanitisedName() in provisionValuesYaml.py), so this
+must stay in sync with it.
 */}}
 {{- define "sanitisedName" -}}
 {{- regexReplaceAll "\\W+" (printf "%s %s" (index . 0) (index . 1)) "-" }}
+{{- end }}
+
+{{/*
+Volume name - a DNS label for the name/key-pair: lower case alphanumerics and dashes, at most
+63 characters. Secret keys are not DNS labels (upper case and underscores are common), so fold
+everything else to dashes; a pair that is still too long keeps a prefix plus a hash of the full
+pair, so two long keys with a common prefix never collide.
+*/}}
+{{- define "volumeName" -}}
+{{- $full := printf "%s %s" (index . 0) (index . 1) | lower -}}
+{{- $name := regexReplaceAll "[^a-z0-9]+" $full "-" | trimAll "-" -}}
+{{- if gt (len $name) 63 -}}
+{{- printf "%s-%s" (trunc 54 $name | trimSuffix "-") (sha256sum $full | trunc 8) -}}
+{{- else -}}
+{{- $name -}}
+{{- end -}}
 {{- end }}
