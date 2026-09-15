@@ -11,9 +11,14 @@ metadata:
   labels:
     {{- include "common.labels.standard" . | nindent 4 }}
 
+{{- /* The image walks this document for every `existingSecret` reference and reads each one from
+       /app/secrets/<name>-<key>. The admin credentials reach it through /app/admin.yaml instead (see
+       the prepare-admin-credentials init container), so that reference stays out of the dump. */}}
+{{- $values := deepCopy .Values }}
+{{- $_ := unset $values.config.keycloak.admin "existingSecret" }}
 stringData:
   values.yaml: |
-    {{ .Values | toYaml | nindent 4 }}
+    {{ $values | toYaml | nindent 4 }}
 ...
 {{- if not (or .Values.config.keycloak.admin.secret.name .Values.config.keycloak.admin.existingSecret.name) }}
 ---
