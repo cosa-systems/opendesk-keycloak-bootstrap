@@ -2,19 +2,5 @@
 # SPDX-License-Identifier: Apache-2.0
 ---
 include:
-  project: "bmi/opendesk/tooling/gitlab-config"
-  ref: "v2.6.9"
-  file:
-    - "ci/common/lint.yml"
-    - "ci/helm/helm-lint.yml"
-    - "ci/helm/helm-release.yml"
-
-stages:
-  - ".pre"
-  - "lint"
-  - "docs"
-  - "package"
-  - "publish"
-  - ".post"
-
+  - component: "$CI_SERVER_FQDN/bmi/opendesk/tooling/gitlab-ci-templates/helm-release@2"
 ...
