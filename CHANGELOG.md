@@ -1,3 +1,10 @@
+## [2.9.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.9.0...v2.9.1) (2026-09-22)
+
+
+### Bug Fixes
+
+* **ci:** Migrate to new pipeline template ([e071ec0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/e071ec0748a5abfc8f27c16e9ec0d7037fcd4c37))
+
 # [2.9.0](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.8.2...v2.9.0) (2026-07-15)
 
 
