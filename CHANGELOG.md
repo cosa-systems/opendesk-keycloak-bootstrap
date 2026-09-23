@@ -1,3 +1,10 @@
+## [2.9.2](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.9.1...v2.9.2) (2026-09-23)
+
+
+### Bug Fixes
+
+* **ci:** Force rebuild due to missing signature ([2a414aa](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/2a414aabc382aa327e24383904ea130ab90c272b))
+
 ## [2.9.1](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.9.0...v2.9.1) (2026-09-22)
 
 
