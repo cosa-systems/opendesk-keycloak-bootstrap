@@ -1,3 +1,10 @@
+## [2.9.3](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.9.2...v2.9.3) (2026-09-23)
+
+
+### Bug Fixes
+
+* **ci:** Force rebuild due to signing key rotation ([2800506](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/commit/2800506a65e144d0d7205a5eedc85a92efee3a64))
+
 ## [2.9.2](https://gitlab.opencode.de/bmi/opendesk/components/platform-development/charts/opendesk-keycloak-bootstrap/compare/v2.9.1...v2.9.2) (2026-09-23)
 
 
